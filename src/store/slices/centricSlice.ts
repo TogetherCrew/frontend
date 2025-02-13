@@ -27,6 +27,7 @@ const createCentricSlice: StateCreator<ICentric> = (set, get) => ({
     limit,
     sortBy,
     name,
+    includeAllCommunities,
   }: IRetrieveCommunitiesProps) => {
     try {
       const params = {
@@ -34,6 +35,7 @@ const createCentricSlice: StateCreator<ICentric> = (set, get) => ({
         limit,
         sortBy,
         ...(name ? { name } : {}),
+        ...(includeAllCommunities ? { includeAllCommunities } : {}),
       };
 
       const { data } = await axiosInstance.get('/communities/', { params });
@@ -55,13 +57,13 @@ const createCentricSlice: StateCreator<ICentric> = (set, get) => ({
       });
 
       return data;
-    } catch (error) {}
+    } catch (error) { }
   },
   retrieveCommunityById: async (communityId: string) => {
     try {
       const { data } = await axiosInstance.get(`/communities/${communityId}`);
       return data;
-    } catch (error) {}
+    } catch (error) { }
   },
   deleteCommunityById: async (communityId: string) => {
     try {
@@ -69,7 +71,7 @@ const createCentricSlice: StateCreator<ICentric> = (set, get) => ({
         `/communities/${communityId}`
       );
       return data;
-    } catch (error) {}
+    } catch (error) { }
   },
   patchCommunityById: async ({
     communityId,
@@ -81,7 +83,7 @@ const createCentricSlice: StateCreator<ICentric> = (set, get) => ({
         updateData
       );
       return data;
-    } catch (error) {}
+    } catch (error) { }
   },
   generateToken: async ({ type, communityId }: IGenerateTokenProps) => {
     const currentTime = new Date().toISOString();

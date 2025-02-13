@@ -123,6 +123,7 @@ export interface IDataTwitter {
 }
 
 export interface ICommunity {
+  _id: string;
   id: string;
   name: string;
   platforms: string[];
@@ -195,6 +196,7 @@ export interface metaData {
 export interface IDiscordModifiedCommunity
   extends Omit<ICommunity, 'platforms'> {
   platforms: ICommunityPlatfromProps[];
+  userHasAccess?: boolean;
 }
 
 export interface IUser {

@@ -5,15 +5,14 @@ import { BsPlus } from "react-icons/bs";
 import TcCommunityList from "./TcCommunityList";
 import Loading from "../../global/Loading";
 import SimpleBackdrop from "../../global/LoadingBackdrop";
-import TcBoxContainer from "../../shared/TcBox/TcBoxContainer";
 import TcButton from "../../shared/TcButton";
-import TcInput from "../../shared/TcInput";
 import TcText from "../../shared/TcText";
 import { useToken } from "../../../context/TokenContext";
 import { debounce } from "../../../helpers/helper";
 import { StorageService } from "../../../services/StorageService";
 import useAppStore from "../../../store/useStore";
 import { IDiscordModifiedCommunity } from "../../../utils/interfaces";
+import SearchWrapper from "@/components/search/SearchWrapper";
 
 export interface CommunityData {
 	limit: number;
@@ -21,6 +20,7 @@ export interface CommunityData {
 	results: any[];
 	totalPages: number;
 	totalResults: number;
+	includeAllCommunities: boolean;
 }
 
 function TcSelectCommunity() {
@@ -32,35 +32,48 @@ function TcSelectCommunity() {
 	const [activeCommunity, setActiveCommunity] =
 		useState<IDiscordModifiedCommunity>();
 	const [fetchedCommunities, setFetchedCommunities] = useState<CommunityData>({
-		limit: 10,
+		limit: 999,
 		page: 1,
 		results: [],
 		totalPages: 0,
 		totalResults: 0,
+		includeAllCommunities: true,
 	});
 
 	const fetchCommunities = async (params: any) => {
 		setLoading(true);
 		const communities = await retrieveCommunities(params);
+		// Sort communities to show those with userHasAccess=true first
+		communities.results = communities.results.sort((a: any, b: any) => {
+			if (a.userHasAccess === b.userHasAccess) {
+				return a.name.localeCompare(b.name);
+			}
+			return a.userHasAccess ? -1 : 1;
+		});
+		communities.results = communities.results.map((community: IDiscordModifiedCommunity) => {
+			community.id = community._id
+			return community
+		});
 		setFetchedCommunities(communities);
 		setLoading(false);
 	};
 
 	const debouncedFetchCommunities = debounce((value: string) => {
-		fetchCommunities({ page: 1, limit: 10, name: value });
+		fetchCommunities({ page: 1, limit: 999, includeAllCommunities: true, name: value });
 	}, 300);
 
 	useEffect(() => {
-		fetchCommunities({ page: 1, limit: 10 });
+		fetchCommunities({ page: 1, limit: 999, includeAllCommunities: true });
 	}, []);
 
-	const handleSelectedCommunity = () => {
+	const handleSelectedCommunity = (community: IDiscordModifiedCommunity) => {
 		setCommunityLoading(true);
-		if (activeCommunity) {
-			updateCommunity(activeCommunity);
+		console.log('community', community)
+		if (community) {
+			updateCommunity(community);
 			StorageService.writeLocalStorage<IDiscordModifiedCommunity>(
 				"community",
-				activeCommunity,
+				community,
 			);
 
 			router.push("/centric/welcome");
@@ -72,65 +85,28 @@ function TcSelectCommunity() {
 	}
 
 	return (
-		<div className="space-y-4" data-testid="tcselect-community">
-			<TcText
-				text="Select your community"
-				sx={{ typography: { xs: "h5", md: "h4" } }}
-			/>
-			<TcText
-				text="You will be able to switch between the communities later"
-				variant="body1"
-			/>
+		<>
+			<div className="flex flex-col gap-4 border-b border-gray-200 pb-8" data-testid="tcselect-community">
+				<h1 className="text-4xl text-left font-semibold">Select your community</h1>
+				<h2 className="text-sm text-left text-gray-500">You will be able to switch between the communities later</h2>
+			</div>
 
-			<TcBoxContainer
-				contentContainerChildren={
-					<>
-						<div className="sticky top-0 z-10 bg-white py-2">
-							<TcInput
-								label="Community"
-								variant="filled"
-								placeholder="Write community name"
-								onChange={(e) => debouncedFetchCommunities(e.target.value)}
-							/>
-						</div>
-						{loading ? (
-							<Loading />
-						) : (
-							<TcCommunityList
-								fetchedCommunities={fetchedCommunities}
-								handleActiveCommunity={(community: IDiscordModifiedCommunity) =>
-									setActiveCommunity(community)
-								}
-							/>
-						)}
-					</>
+			<div className="flex flex-col gap-4">
+				<div className="flex justify-between gap-4">
+					<SearchWrapper debouncedFetchCommunities={debouncedFetchCommunities} />
+					<button
+						className="bg-black text-white px-4 py-2 rounded-full flex gap-1 items-center hover:opacity-80"
+						onClick={() => router.push("/centric/create-new-community")}>
+						<BsPlus className="text-lg" />
+						<span>Create</span>
+					</button>
+				</div>
+				{loading ? <Loading /> : <TcCommunityList
+					fetchedCommunities={fetchedCommunities}
+					handleSelectedCommunity={handleSelectedCommunity} />
 				}
-				className="border-custom-gray mx-auto max-h-[25rem] min-h-[20rem] overflow-y-scroll rounded-lg border md:w-3/5"
-			/>
-
-			<TcButton
-				text="Continue"
-				className="secondary"
-				variant="contained"
-				sx={{ width: "15rem", padding: "0.5rem" }}
-				disabled={!activeCommunity}
-				onClick={handleSelectedCommunity}
-			/>
-
-			<hr className="mx-auto w-6/12" />
-
-			<TcText
-				text="Create a new community account"
-				sx={{ typography: { xs: "body1", md: "h6" } }}
-			/>
-			<TcButton
-				startIcon={<BsPlus />}
-				text="Create"
-				sx={{ width: "15rem", padding: "0.5rem" }}
-				variant="outlined"
-				onClick={() => router.push("/centric/create-new-community")}
-			/>
-		</div>
+			</div>
+		</>
 	);
 }
 
