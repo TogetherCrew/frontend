@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar } from '@mui/material';
-import clsx from 'clsx';
-import { MdGroups } from 'react-icons/md';
-
-import TcAvatar from '../../shared/TcAvatar';
+import React, { useEffect } from 'react';
 import TcText from '../../shared/TcText';
-import { conf } from '../../../configs';
 import { StorageService } from '../../../services/StorageService';
 import { IDiscordModifiedCommunity } from '../../../utils/interfaces';
+import TcCommunityItem from './TcCommunityItem';
+import { useToken } from '@/context/TokenContext';
 
 /**
  * Props for the TcCommunityListItems component.
@@ -17,7 +13,7 @@ interface ITcCommunityListItemsProps {
    * Array of community objects with avatar URLs and labels.
    */
   communities: IDiscordModifiedCommunity[];
-  onSelectCommunity: (selectedCommunity: IDiscordModifiedCommunity) => void;
+  handleSelectedCommunity: (selectedCommunity: IDiscordModifiedCommunity) => void;
 }
 
 /**
@@ -43,48 +39,13 @@ interface ITcCommunityListItemsProps {
 
 function TcCommunityListItems({
   communities,
-  onSelectCommunity,
+  handleSelectedCommunity,
 }: ITcCommunityListItemsProps) {
-  const [selectedCommunity, setSelectedCommunity] =
-    useState<IDiscordModifiedCommunity>();
+  const { deleteCommunity } = useToken();
 
   useEffect(() => {
-    const community =
-      StorageService.readLocalStorage<IDiscordModifiedCommunity>('community');
-    setSelectedCommunity(community);
+    deleteCommunity();
   }, []);
-
-  useEffect(() => {
-    if (selectedCommunity) {
-      onSelectCommunity(selectedCommunity);
-    }
-  }, [selectedCommunity]);
-
-  const renderPlatformAvatar = (community: IDiscordModifiedCommunity) => {
-    let activeCommunityPlatformIcon;
-
-    if (community?.platforms) {
-      activeCommunityPlatformIcon = community.platforms.find(
-        (platform) =>
-          platform.disconnectedAt === null && platform.name === 'discord'
-      );
-    }
-
-    if (activeCommunityPlatformIcon?.metadata?.icon) {
-      return (
-        <Avatar
-          src={`${conf.DISCORD_CDN}icons/${activeCommunityPlatformIcon.metadata.id}/${activeCommunityPlatformIcon.metadata.icon}`}
-          alt={
-            activeCommunityPlatformIcon.metadata.name
-              ? activeCommunityPlatformIcon.metadata.name
-              : ''
-          }
-        />
-      );
-    }
-
-    return <MdGroups size={28} />;
-  };
 
   if (communities.length === 0) {
     return (
@@ -95,25 +56,13 @@ function TcCommunityListItems({
   }
 
   return (
-    <div className='mx-2 mt-8 flex flex-wrap justify-start'>
+    <div className='grid grid-cols-4 gap-4'>
       {communities.map((community, index) => (
-        <div
-          className={clsx(
-            selectedCommunity?.id === community.id ? 'bg-gray-100' : '',
-            'min-h-[150px] w-1/2 flex-shrink-0 cursor-pointer space-y-2 rounded px-8 py-4 text-center transition-all delay-75 ease-in hover:bg-gray-100 md:w-1/4'
-          )}
-          key={community.name + index}
-          onClick={() => setSelectedCommunity(community)}
-        >
-          {community?.avatarURL ? (
-            <TcAvatar className='mx-auto' src={community.avatarURL} />
-          ) : (
-            <TcAvatar className='mx-auto'>
-              {renderPlatformAvatar(community)}
-            </TcAvatar>
-          )}
-          <TcText text={community.name} variant='body1' />
-        </div>
+        <TcCommunityItem
+          key={index}
+          community={community}
+          handleSelectedCommunity={handleSelectedCommunity}
+        />
       ))}
     </div>
   );
