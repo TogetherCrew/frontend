@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 import router from "next/router";
 import { BsPlus } from "react-icons/bs";
+
+import SearchWrapper from "@/components/search/SearchWrapper";
 
 import TcCommunityList from "./TcCommunityList";
 import Loading from "../../global/Loading";
@@ -12,7 +15,6 @@ import { debounce } from "../../../helpers/helper";
 import { StorageService } from "../../../services/StorageService";
 import useAppStore from "../../../store/useStore";
 import { IDiscordModifiedCommunity } from "../../../utils/interfaces";
-import SearchWrapper from "@/components/search/SearchWrapper";
 
 export interface CommunityData {
 	limit: number;
@@ -94,12 +96,14 @@ function TcSelectCommunity() {
 			<div className="flex flex-col gap-4">
 				<div className="flex justify-between gap-4">
 					<SearchWrapper debouncedFetchCommunities={debouncedFetchCommunities} />
-					<button
-						className="bg-black text-white px-4 py-2 rounded-full flex gap-1 items-center hover:opacity-80"
+					<Button
+						variant="contained"
+						color="primary"
+						className="px-5 py-2 rounded-full flex gap-1 items-center hover:opacity-80 shadow-none"
 						onClick={() => router.push("/centric/create-new-community")}>
 						<BsPlus className="text-lg" />
 						<span>Create</span>
-					</button>
+					</Button>
 				</div>
 				{loading ? <Loading /> : <TcCommunityList
 					fetchedCommunities={fetchedCommunities}
