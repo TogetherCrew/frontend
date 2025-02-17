@@ -3,6 +3,7 @@ export interface IRetrieveCommunitiesProps {
   limit: number;
   sortBy?: string;
   name?: string;
+  includeAllCommunities?: boolean;
 }
 export interface ICreateCommunitieProps {
   name: string;
