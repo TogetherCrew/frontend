@@ -38,7 +38,7 @@ function DisabledCard({ platform }: IReputationItemProps) {
   )
 }
 
-export function ReputationItem({ platform }: IReputationItemProps) {
+export default function ReputationItem({ platform }: IReputationItemProps) {
   const { data, loading, error } = useApi<ICommunityPlatfromProps>(`/platforms/${platform.id}/reputation-score`);
 
   if (loading) return <Loading />
