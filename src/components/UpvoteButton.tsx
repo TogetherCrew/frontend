@@ -1,7 +1,7 @@
 import { useSnackbar } from "@/context/SnackbarContext";
 import { setAmplitudeUserIdFromToken, trackAmplitudeEvent } from "@/helpers/amplitudeHelper";
 
-export function UpvoteButton({ eventType, eventProperties }: { eventType: string, eventProperties: Record<string, any> }) {
+function UpvoteButton({ eventType, eventProperties }: { eventType: string, eventProperties: Record<string, any> }) {
   const { showMessage } = useSnackbar();
 
   const handle = () => {
@@ -37,3 +37,5 @@ export function UpvoteButton({ eventType, eventProperties }: { eventType: string
   )
 
 }
+
+export default UpvoteButton;

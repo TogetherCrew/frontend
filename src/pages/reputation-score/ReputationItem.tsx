@@ -2,9 +2,8 @@ import { useApi } from "@/hooks/useApi";
 
 import TcCommunityPlatformIcon from "@/components/communitySettings/communityPlatforms/TcCommunityPlatformIcon";
 import Loading from "@/components/global/Loading";
-import { UpvoteButton } from "@/components/UpvoteButton";
+import UpvoteButton from "@/components/UpvoteButton";
 
-import { conf } from "@/configs";
 import { useToken } from "@/context/TokenContext";
 import { ICommunityPlatfromProps } from "@/utils/interfaces"
 
@@ -38,7 +37,7 @@ function DisabledCard({ platform }: IReputationItemProps) {
   )
 }
 
-export default function ReputationItem({ platform }: IReputationItemProps) {
+function ReputationItem({ platform }: IReputationItemProps) {
   const { data, loading, error } = useApi<ICommunityPlatfromProps>(`/platforms/${platform.id}/reputation-score`);
 
   if (loading) return <Loading />
@@ -54,3 +53,5 @@ export default function ReputationItem({ platform }: IReputationItemProps) {
     </div>
   )
 }
+
+export default ReputationItem;
