@@ -5,7 +5,7 @@ import { useToken } from "@/context/TokenContext";
 import { defaultLayout } from "@/layouts/defaultLayout";
 import { withRoles } from "@/utils/withRoles";
 
-import { ReputationItem } from "./ReputationItem";
+import ReputationItem from "./ReputationItem";
 
 function ReputationScore() {
 
