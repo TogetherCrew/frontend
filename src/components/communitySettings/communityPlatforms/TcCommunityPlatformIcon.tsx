@@ -20,31 +20,34 @@ function TcCommunityPlatformIcon({
 	platform,
 	size = 44,
 }: TcCommunityPlatformIconProps) {
+
+	platform = platform.toLowerCase();
+
 	const renderIcon = () => {
 		switch (platform) {
-			case "Discord":
+			case "discord":
 				return <FaDiscord size={size} />;
-			case "Twitter":
+			case "twitter":
 				return <FaTwitter size={size} />;
-			case "X":
+			case "x":
 				return <FaSquareXTwitter size={size} />;
-			case "Discourse":
+			case "discourse":
 				return <FaDiscourse size={size} />;
-			case "Telegram":
+			case "telegram":
 				return <FaTelegram size={size} />;
-			case "Snapshot":
+			case "snapshot":
 				return <AiFillThunderbolt size={size} />;
-			case "Github":
+			case "github":
 				return <FaGithub size={size} />;
-			case "GDrive":
+			case "gdrive":
 				return <FaGoogleDrive size={size} />;
-			case "Notion":
+			case "notion":
 				return <RiNotionFill size={size} />;
-			case "MediaWiki":
+			case "mediawiki":
 				return <FaWikipediaW size={size} />;
-			case "Google":
+			case "google":
 				return <FaGoogle size={size} />;
-			case "Gitbook":
+			case "gitbook":
 				return <SiGitbook size={size} />;
 			default:
 				return null;

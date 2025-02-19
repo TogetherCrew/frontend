@@ -23,25 +23,29 @@ export const setAmplitudeUserIdFromToken = () => {
   }
 };
 
-export const trackAmplitudeEvent = ({
+export const trackAmplitudeEvent = async ({
   eventType,
   eventProperties,
   callback,
 }: ITrackEventParams) => {
-  amplitude
-    .track({
-      event_type: eventType,
-      event_properties: eventProperties,
-    })
-    .promise.then(function (result) {
-      if (callback) {
-        callback({
-          event: result.event,
-          code: result.code,
-          message: result.message,
-        });
-      }
-    });
+  try {
+    amplitude
+      .track({
+        event_type: eventType,
+        event_properties: eventProperties,
+      })
+      .promise.then(function (result) {
+        if (callback) {
+          callback({
+            event: result.event,
+            code: result.code,
+            message: result.message,
+          });
+        }
+      })
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export function usePageViewTracking() {
