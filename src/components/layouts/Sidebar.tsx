@@ -118,15 +118,15 @@ const Sidebar = () => {
 		},
 	];
 
-	if (dynamicNFTModuleInfo?.isNFTModuleEnabled) {
-		menuItems.splice(menuItems.length - 1, 0, {
-			name: "Reputation Score",
-			path: "/reputation-score",
-			icon: (
-				<RiNftFill style={{ fontSize: 20, color: "black", margin: "0 auto" }} />
-			),
-		});
-	}
+	// if (dynamicNFTModuleInfo?.isNFTModuleEnabled) {
+	menuItems.splice(menuItems.length - 1, 0, {
+		name: "Reputation Score",
+		path: "/reputation-score",
+		icon: (
+			<RiNftFill style={{ fontSize: 20, color: "black", margin: "0 auto" }} />
+		),
+	});
+	// }
 
 	if (!userPermissions.includes("admin")) {
 		menuItems = menuItems.filter(
