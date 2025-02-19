@@ -1,11 +1,10 @@
 import Loading from "@/components/global/Loading";
 import SEO from "@/components/global/SEO";
+import ReputationItem from "@/components/reputation/ReputationItem";
 
 import { useToken } from "@/context/TokenContext";
 import { defaultLayout } from "@/layouts/defaultLayout";
 import { withRoles } from "@/utils/withRoles";
-
-import ReputationItem from "./ReputationItem";
 
 function ReputationScore() {
 

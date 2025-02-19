@@ -7,6 +7,16 @@ import UpvoteButton from "@/components/UpvoteButton";
 import { useToken } from "@/context/TokenContext";
 import { ICommunityPlatfromProps } from "@/utils/interfaces"
 
+const ALLOW_LIST = [
+  'discord',
+  'telegram',
+  // 'twitter',
+  // 'github',
+  // 'linkedin',
+  // 'instagram',
+  // 'youtube',
+]
+
 interface IReputationItemProps {
   platform: ICommunityPlatfromProps
 }
@@ -37,7 +47,8 @@ function DisabledCard({ platform }: IReputationItemProps) {
   )
 }
 
-function ReputationItem({ platform }: IReputationItemProps) {
+function ActiveCard({ platform }: IReputationItemProps) {
+
   const { data, loading, error } = useApi<ICommunityPlatfromProps>(`/platforms/${platform.id}/reputation-score`);
 
   if (loading) return <Loading />
@@ -52,6 +63,13 @@ function ReputationItem({ platform }: IReputationItemProps) {
       </div>
     </div>
   )
+}
+
+function ReputationItem({ platform }: IReputationItemProps) {
+
+  if (!ALLOW_LIST.includes(platform.name)) return <DisabledCard platform={platform} />;
+
+  return <ActiveCard platform={platform} />
 }
 
 export default ReputationItem;
