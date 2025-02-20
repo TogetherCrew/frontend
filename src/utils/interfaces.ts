@@ -185,6 +185,10 @@ export interface ICommunityPlatfromProps {
     analyzerStartedAt?: string;
     isInProgress?: boolean;
     isFetchingInitialData?: boolean;
+    chat?: {
+      name: string;
+      id: string;
+    };
   };
   disconnectedAt: string | null;
 }

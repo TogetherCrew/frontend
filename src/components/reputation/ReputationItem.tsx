@@ -21,11 +21,22 @@ interface IReputationItemProps {
   platform: ICommunityPlatfromProps
 }
 
+function name(platform: ICommunityPlatfromProps) {
+  switch (platform.name) {
+    case 'discord':
+      return platform.metadata.name
+    case 'telegram':
+      return platform.metadata.chat?.name
+    default:
+      return platform.name
+  }
+}
+
 function CardHeader({ platform }: IReputationItemProps) {
   return (
     <div className="flex flex-row gap-2 items-center text-gray-500">
       <TcCommunityPlatformIcon platform={platform.name} size={24} />
-      <h3 className='text-sm font-semibold text-left capitalize'>{platform.metadata.name ? platform.metadata.name : platform.name}</h3>
+      <h3 className='text-sm font-semibold text-left capitalize'>{name(platform)}</h3>
     </div>
   )
 }
