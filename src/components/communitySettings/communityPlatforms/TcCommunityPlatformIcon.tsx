@@ -6,7 +6,7 @@ import { FaGithub } from "react-icons/fa";
 import { FaGoogleDrive } from "react-icons/fa";
 import { FaWikipediaW } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
-import { FaTelegram, FaTwitter } from "react-icons/fa6";
+import { FaGlobe, FaTelegram, FaTwitter } from "react-icons/fa6";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { RiNotionFill } from "react-icons/ri";
 import { SiGitbook } from "react-icons/si";
@@ -49,6 +49,8 @@ function TcCommunityPlatformIcon({
 				return <FaGoogle size={size} />;
 			case "gitbook":
 				return <SiGitbook size={size} />;
+			case "website":
+				return <FaGlobe size={size} />;
 			default:
 				return null;
 		}

@@ -11,6 +11,7 @@ import TcGithubIntegration from "./TcGithubIntegration";
 import TcMediaWiki from "./TcMediaWiki";
 import TcNotionIntegration from "./TcNotionIntegration";
 import TcTelegram from "./TcTelegram/TcTelegram";
+import TcWebsite from "./TcWebsite";
 import TcButton from "../../shared/TcButton";
 import TcCard from "../../shared/TcCard";
 import TcText from "../../shared/TcText";
@@ -57,7 +58,7 @@ function TcCommunityPlatforms() {
 	const addPlatform = searchParams.get("addPlatform");
 
 	useEffect(() => {
-		const platform = managePlatform || addPlatform; 
+		const platform = managePlatform || addPlatform;
 
 		switch (platform) {
 			case "discord":
@@ -77,6 +78,9 @@ function TcCommunityPlatforms() {
 				break;
 			case "telegram":
 				setActiveTab(5);
+				break;
+			case "website":
+				setActiveTab(6);
 				break;
 			default:
 				setActiveTab(0);
@@ -108,7 +112,8 @@ function TcCommunityPlatforms() {
 			"notion",
 			"mediaWiki",
 			"telegram",
-			"google",
+			// "google",
+			"website",
 		];
 
 		const platformName = platformNames[activeTab];
@@ -233,13 +238,14 @@ function TcCommunityPlatforms() {
 									activeTab === index
 										? "bg-secondary/80 text-white"
 										: ![
-													"Discord",
-													"Discourse",
-													"Github",
-													"Notion",
-													"MediaWiki",
-													"Telegram",
-												].includes(platform)
+											"Discord",
+											"Discourse",
+											"Github",
+											"Notion",
+											"MediaWiki",
+											"Telegram",
+											"Website",
+										].includes(platform)
 											? "bg-white"
 											: "bg-white text-black",
 								)}
@@ -265,6 +271,7 @@ function TcCommunityPlatforms() {
 										"Notion",
 										"MediaWiki",
 										"Telegram",
+										"Website",
 									].includes(platform)
 								}
 								{...a11yProps(index)}
@@ -328,6 +335,15 @@ function TcCommunityPlatforms() {
 					)}
 					{activeTab === 6 && (
 						<TabPanel value={activeTab} index={6}>
+							<TcWebsite
+								isLoading={isLoading}
+								connectedPlatforms={platforms}
+								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
+							/>
+						</TabPanel>
+					)}
+					{activeTab === 7 && (
+						<TabPanel value={activeTab} index={7}>
 							<TcGdriveIntegration
 								isLoading={isLoading}
 								connectedPlatforms={platforms}

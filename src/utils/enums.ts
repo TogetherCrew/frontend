@@ -5,6 +5,7 @@ export enum IntegrationPlatform {
   Notion = 'Notion',
   MediaWiki = 'MediaWiki',
   Telegram = 'Telegram',
+  Website = 'Website',
   X = 'X',
   Snapshot = 'Snapshot',
   GDrive = 'GDrive',
