@@ -24,9 +24,9 @@ interface IReputationItemProps {
 function name(platform: ICommunityPlatfromProps) {
   switch (platform.name) {
     case 'discord':
-      return platform.metadata.name
+      return platform.metadata.name || platform.name
     case 'telegram':
-      return platform.metadata.chat?.name
+      return platform.metadata.chat?.title || platform.name
     default:
       return platform.name
   }

@@ -186,7 +186,7 @@ export interface ICommunityPlatfromProps {
     isInProgress?: boolean;
     isFetchingInitialData?: boolean;
     chat?: {
-      name: string;
+      title: string;
       id: string;
     };
   };
