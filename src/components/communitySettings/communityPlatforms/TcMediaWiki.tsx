@@ -31,7 +31,7 @@ function TcMediaWiki({
 	connectedPlatforms,
 	handleUpdateCommunityPlatform,
 }: TcMediaWikiProps) {
-  const router = useRouter();
+	const router = useRouter();
 	const searchParams = useSearchParams();
 
 	const addPlatform = searchParams.get("addPlatform");
@@ -108,10 +108,10 @@ function TcMediaWiki({
 		}
 	};
 
-  const handleClose = () => {
-    setIsOpen(false);
-    router.push('/community-settings/?managePlatform=mediawiki')
-  }
+	const handleClose = () => {
+		setIsOpen(false);
+		router.push('/community-settings/?managePlatform=mediawiki')
+	}
 
 	return (
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">
@@ -163,7 +163,7 @@ function TcMediaWiki({
 						},
 					},
 				}}
-        onClick={handleClose}
+			// onClick={handleClose}
 			>
 				<div className="flex flex-col p-5">
 					<div className="absolute right-2 top-2">
