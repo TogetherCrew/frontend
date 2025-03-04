@@ -10,6 +10,7 @@ import TcHivemindGithub from './TcHivemindGithub';
 import TcHivemindGoogle from './TcHivemindGoogle';
 import TcHivemindMediaWiki from './TcHivemindMediaWiki';
 import TcHivemindNotion from './TcHivemindNotion';
+import TcHivemindWebsite from './TcHivemindWebsite';
 import TcCommunityPlatformIcon from '../communityPlatforms/TcCommunityPlatformIcon';
 import TcAvatar from '../../shared/TcAvatar';
 import TcButton from '../../shared/TcButton';
@@ -58,6 +59,7 @@ const PLATFORM_ORDER = [
   IntegrationPlatform.Github,
   IntegrationPlatform.Notion,
   IntegrationPlatform.MediaWiki,
+  IntegrationPlatform.Website,
   IntegrationPlatform.Discourse,
   IntegrationPlatform.Telegram,
   IntegrationPlatform.X,
@@ -172,6 +174,23 @@ function HivemindSettings() {
         setIsActivePlatformLoading(false);
         break;
 
+      case 4:
+        setIsActivePlatformLoading(true);
+        const { results: websiteResults } = await retrievePlatforms({
+          name: 'website',
+          community: communityId,
+        });
+
+        const websiteHivemindModule = hivemindModules.results.find(
+          (hivemindModule: IModuleProps) =>
+            hivemindModule.community === communityId
+        );
+
+        setHivemindModule(websiteHivemindModule);
+        setPlatforms(websiteResults);
+        setIsActivePlatformLoading(false);
+        break;
+
       default:
         break;
     }
@@ -209,7 +228,7 @@ function HivemindSettings() {
   };
 
   const handlePatchModule = async (
-    moduleType: 'discord' | 'google' | 'github' | 'notion' | 'mediaWiki',
+    moduleType: 'discord' | 'google' | 'github' | 'notion' | 'mediaWiki' | 'website',
     payload?: any
   ) => {
     try {
@@ -282,12 +301,26 @@ function HivemindSettings() {
             },
           ],
         };
+      } else if (moduleType === 'website') {
+        setLoading(true);
+        patchPayload = {
+          platforms: [
+            {
+              platform: platforms[platform].id,
+              name: 'website',
+              metadata: {
+                ...payload,
+              },
+            },
+          ],
+        };
       }
-
       const data = await patchModule({
         moduleId: hivemindModule.id,
         payload: patchPayload,
       });
+
+      console.log(data);
 
       if (data) {
         showMessage('AI assistant module updated successfully', 'success');
@@ -329,6 +362,13 @@ function HivemindSettings() {
           15
         );
         break;
+      case 'website':
+        src = '';
+        text = truncateCenter(
+          platform?.metadata?.resources[0].replace('https://', ''),
+          15
+        );
+        break;
       default:
         src = '';
         text = '';
@@ -352,9 +392,9 @@ function HivemindSettings() {
                 'mr-3 min-h-[6rem] min-w-[10rem] rounded-sm shadow-lg',
                 activePlatform === index
                   ? 'bg-secondary/80 text-white'
-                  : !['Discord', 'Github', 'Notion', 'MediaWiki'].includes(
-                        platform
-                      )
+                  : !['Discord', 'Github', 'Notion', 'MediaWiki', 'Website'].includes(
+                    platform
+                  )
                     ? 'bg-white'
                     : 'bg-white text-black'
               )}
@@ -373,7 +413,7 @@ function HivemindSettings() {
                 </div>
               }
               disabled={
-                !['Discord', 'Github', 'Notion', 'MediaWiki'].includes(platform)
+                !['Discord', 'Github', 'Notion', 'MediaWiki', 'Website'].includes(platform)
               }
               {...a11yProps(index)}
             />
@@ -525,6 +565,23 @@ function HivemindSettings() {
         )}
         {activePlatform === 4 && (
           <TabPanel value={activePlatform} index={4}>
+            {platforms && platforms.length > 0 && (
+              <TcHivemindWebsite
+                isLoading={loading}
+                defaultWebsiteHivemindConfig={platforms[0]}
+                // hivemindModule?.options?.platforms.find(
+                //   (platform) => platform.name === 'website'
+                // )?.metadata || {scheduleId: '' }
+                // }
+                handlePatchHivemindWebsite={() =>
+                  handlePatchModule('website')
+                }
+              />
+            )}
+          </TabPanel>
+        )}
+        {activePlatform === 5 && (
+          <TabPanel value={activePlatform} index={5}>
             {platforms && platforms.length > 0 && (
               <TcHivemindGoogle
                 defaultGoogleHivemindConfig={

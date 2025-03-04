@@ -7,6 +7,7 @@ import { IoClose, IoSettingsSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 
 import TcCommunityPlatformIcon from "./TcCommunityPlatformIcon";
+import ChipList from "../../chip-input/ChipList";
 import TcAvatar from "../../shared/TcAvatar";
 import TcButton from "../../shared/TcButton";
 import TcDialog from "../../shared/TcDialog";
@@ -19,12 +20,19 @@ import {
 	IDiscordModifiedCommunity,
 	IPlatformProps,
 } from "../../../utils/interfaces";
-
 interface TcWebsiteProps {
 	isLoading: boolean;
 	connectedPlatforms: IPlatformProps[];
 	handleUpdateCommunityPlatform: () => void;
 }
+
+// const resources = [
+// 	"https://www.togethercrew.com",
+// 	"https://www.rndao.io",
+// 	"https://meetwithwallet.xyz/",
+// 	"https://collabberry.xyz/",
+// 	"https://www.google.com",
+// ]
 
 function TcWebsite({
 	isLoading,
@@ -35,16 +43,16 @@ function TcWebsite({
 	const searchParams = useSearchParams();
 
 	const addPlatform = searchParams.get("addPlatform");
-	const { createNewPlatform, deletePlatform } = useAppStore();
+	const { createNewPlatform, deletePlatform, patchPlatformById } = useAppStore();
 	const [activePlatform, setActivePlatform] = useState<IPlatformProps | null>(
 		null,
 	);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [url, setUrl] = useState<string>("");
-	const [urlError, setUrlError] = useState<string>("");
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
 	const { showMessage } = useSnackbar();
+
+	const [items, setItems] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (addPlatform === "website") {
@@ -52,46 +60,44 @@ function TcWebsite({
 		}
 	}, [addPlatform]);
 
+	useEffect(() => {
+		setItems(activePlatform?.metadata?.resources || []);
+	}, [activePlatform]);
+
 	const communityId =
 		StorageService.readLocalStorage<IDiscordModifiedCommunity>("community")?.id;
 
 	const handleOpenDialog = (platform: IPlatformProps | null = null) => {
 		setActivePlatform(platform);
-		setUrl(platform?.metadata?.baseURL || "");
 		setIsOpen(true);
 	};
 
-	const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value;
-		setUrl(value);
-		validateUrl(value);
-	};
-
-	const validateUrl = (value: string) => {
-		const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.[^\s]{2,}([^\s]*)?$/i;
-		if (!regex.test(value)) {
-			setUrlError("Invalid URL. Please enter a valid site URL.");
+	const handleChange = async (items: string[]) => {
+		setItems(items);
+		let data = null;
+		if (activePlatform) {
+			data = await patchPlatformById({
+				id: activePlatform.id,
+				metadata: { resources: items },
+			});
+			if (data) {
+				handleUpdateCommunityPlatform();
+				setIsOpen(false);
+				showMessage("Platform updated successfully.", "success");
+			}
 		} else {
-			setUrlError("");
+			data = await createNewPlatform({
+				community: communityId,
+				name: "website",
+				metadata: { resources: items },
+			});
+			if (data) {
+				handleUpdateCommunityPlatform();
+				setIsOpen(false);
+				showMessage("Platform connected successfully.", "success");
+			}
 		}
-	};
-
-	const handleCreateNewPlatform = async () => {
-		const data = await createNewPlatform({
-			community: communityId,
-			name: "website",
-			metadata: {
-				resources: [url],
-				// path: "",
-			},
-		});
-		if (data) {
-			handleUpdateCommunityPlatform();
-			setIsOpen(false);
-			setUrl("");
-			showMessage("Platform connected successfully.", "success");
-		}
-	};
+	}
 
 	const handleDisconnectPlatform = async (deleteType: "hard" | "soft") => {
 		try {
@@ -184,66 +190,9 @@ function TcWebsite({
 								/>
 							</div>
 						</div>
-						{activePlatform ? (
-							<>
-								<div className="flex items-center space-x-3">
-									<TcText
-										text="Website URL:"
-										variant="body1"
-										fontWeight="bold"
-									/>
-									<TcText
-										text={`${activePlatform.metadata.resources[0]}`}
-										variant="body1"
-									/>
-								</div>
-								<div className="flex items-center justify-between">
-									<TcButton
-										fullWidth
-										text="Disconnect"
-										startIcon={<MdDelete />}
-										variant="outlined"
-										onClick={() => {
-											setIsDeleteDialogOpen(true);
-											setIsOpen(false);
-										}}
-									/>
-								</div>
-							</>
-						) : (
-							<FormControl variant="filled" fullWidth size="medium">
-								<TextField
-									label="Website URL"
-									variant="filled"
-									placeholder="https://example.org"
-									value={url}
-									onChange={handleUrlChange}
-									error={!!urlError}
-									helperText={
-										urlError ||
-										"The base URL of your website, for example https://example.org"
-									}
-								/>
-							</FormControl>
-						)}
+						<ChipList items={items} handleChange={handleChange} />
+
 					</div>
-					{!activePlatform && (
-						<div className="flex items-center justify-between px-5">
-							<TcButton
-								className="w-1/3"
-								text="Cancel"
-								variant="outlined"
-								onClick={() => setIsOpen(false)}
-							/>
-							<TcButton
-								className="w-1/3"
-								text="Confirm"
-								disabled={!!urlError || url === ""}
-								variant="contained"
-								onClick={handleCreateNewPlatform}
-							/>
-						</div>
-					)}
 				</div>
 			</TcDialog>
 			<TcDialog
