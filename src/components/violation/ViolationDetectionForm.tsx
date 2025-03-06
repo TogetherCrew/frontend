@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { pl } from "date-fns/locale";
 import router from "next/router";
 
 import useAppStore from "@/store/useStore";
@@ -29,10 +30,12 @@ export function ViolationDetectionForm({ platform, module }: ViolationDetectionF
 
     const updatedEmails = isActive ? selectedEmails : [];
 
+    console.log("platform", platform);
+
     const payload = {
       platforms: [
         {
-          platform: platform.id,
+          platform: platform.id || (platform as any)._id,
           name: platform.name,
           metadata: {
             selectedEmails: updatedEmails,
