@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import router from "next/router";
 
+import Loading from "@/components/global/Loading";
 import TcButton from "@/components/shared/TcButton";
 
 import useAppStore from "@/store/useStore";
@@ -47,10 +48,11 @@ function Index() {
 	const { showMessage } = useSnackbar();
 
 	const fetchDiscourseViolation = async () => {
-		const communityId =
-			StorageService.readLocalStorage<IDiscordModifiedCommunity>(
-				"community",
-			)?.id;
+		console.log("fetchDiscourseViolation", community);
+		// const communityId =
+		// 	StorageService.readLocalStorage<IDiscordModifiedCommunity>(
+		// 		"community",
+		// 	)?.id;
 
 		const discoursePlatform = community?.platforms.find(
 			(platform) =>
@@ -59,9 +61,9 @@ function Index() {
 
 		setActivePlatform(discoursePlatform);
 
-		if (communityId) {
+		if (community) {
 			const { results } = await retrieveModules({
-				community: communityId,
+				community: community.id,
 				name: "violationDetection",
 			});
 
@@ -85,7 +87,7 @@ function Index() {
 
 	useEffect(() => {
 		fetchDiscourseViolation();
-	}, []);
+	}, [community]);
 
 	const validateEmail = (email: string) => {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -144,6 +146,10 @@ function Index() {
 			setIsLoading(false);
 		}
 	};
+
+	if (!community || !activePlatform) {
+		return <Loading />;
+	}
 
 	return (
 		<>
