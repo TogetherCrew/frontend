@@ -1,30 +1,13 @@
-/* eslint-disable react/jsx-key */
-import React, { useEffect, useState } from "react";
 import {
 	Alert,
 	AlertTitle,
-	Autocomplete,
-	Chip,
-	CircularProgress,
-	FormControl,
-	FormControlLabel,
-	FormHelperText,
-	FormLabel,
-	Switch,
-	TextField,
 	Typography,
 } from "@mui/material";
-import router from "next/router";
 
 import Loading from "@/components/global/Loading";
-import TcButton from "@/components/shared/TcButton";
+import { ViolationDetection } from "@/components/violation/ViolationDetection";
 
-import useAppStore from "@/store/useStore";
-
-import { useSnackbar } from "@/context/SnackbarContext";
 import { useToken } from "@/context/TokenContext";
-import { StorageService } from "@/services/StorageService";
-import { IDiscordModifiedCommunity, IPlatformProps } from "@/utils/interfaces";
 
 import SEO from "../../../components/global/SEO";
 import TcBoxContainer from "../../../components/shared/TcBox/TcBoxContainer";
@@ -33,123 +16,7 @@ import { defaultLayout } from "../../../layouts/defaultLayout";
 import { withRoles } from "../../../utils/withRoles";
 
 function Index() {
-	const { retrieveModules, patchModule } = useAppStore();
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [emails, setEmails] = useState<string[]>([]);
-	const [activePlatform, setActivePlatform] = useState<IPlatformProps | null>(
-		null,
-	);
-	const [violationModules, setViolationModules] = useState<any[]>([]);
-	const [isViolationDetectionOn, setIsViolationDetectionOn] =
-		useState<boolean>(false);
-	const [emailError, setEmailError] = useState<string | null>(null);
-
 	const { community } = useToken();
-	const { showMessage } = useSnackbar();
-
-	const fetchDiscourseViolation = async () => {
-		console.log("fetchDiscourseViolation", community);
-		// const communityId =
-		// 	StorageService.readLocalStorage<IDiscordModifiedCommunity>(
-		// 		"community",
-		// 	)?.id;
-
-		const discoursePlatform = community?.platforms.find(
-			(platform) =>
-				platform.name === "discourse" && platform.disconnectedAt === null,
-		) as unknown as IPlatformProps;
-
-		setActivePlatform(discoursePlatform);
-
-		if (community) {
-			const { results } = await retrieveModules({
-				community: community.id,
-				name: "violationDetection",
-			});
-
-			setViolationModules(results);
-
-			if (results.length > 0) {
-				if (results[0]?.options?.platforms.length === 0) return;
-				setEmails(
-					results[0]?.options?.platforms[0]?.metadata?.selectedEmails || [],
-				);
-
-				const hasActiveModerators =
-					results[0].options.platforms[0].metadata.selectedEmails.length > 0;
-				setIsViolationDetectionOn(hasActiveModerators ? true : false);
-			} else {
-				setEmails([]);
-				setIsViolationDetectionOn(false);
-			}
-		}
-	};
-
-	useEffect(() => {
-		fetchDiscourseViolation();
-	}, [community]);
-
-	const validateEmail = (email: string) => {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	};
-
-	const handleEmailChange = (event: any, newValue: string[] | null) => {
-		if (newValue) {
-			const invalidEmail = newValue.find((email) => !validateEmail(email));
-			if (invalidEmail) {
-				setEmailError(`Invalid email: ${invalidEmail}`);
-			} else {
-				setEmailError(null);
-				setEmails(newValue);
-			}
-		}
-	};
-
-	const handleDiscourseViolation = async () => {
-		if (!activePlatform) return;
-
-		const updatedEmails = isViolationDetectionOn ? emails : [];
-
-		const payload = {
-			platforms: [
-				{
-					platform: activePlatform.id,
-					name: activePlatform.name,
-					metadata: {
-						selectedEmails: updatedEmails,
-						fromDate: activePlatform.metadata.period,
-						toDate: null,
-						selectedResources: [],
-					},
-				},
-			],
-		};
-
-		try {
-			setIsLoading(true);
-			const data = await patchModule({
-				moduleId: violationModules[0].id,
-				payload,
-			});
-
-			if (data) {
-				router.push("/community-settings");
-				showMessage(
-					"Violation detection settings updated successfully",
-					"success",
-				);
-			}
-		} catch (error) {
-			console.error("Error updating violation module:", error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	if (!community || !activePlatform) {
-		return <Loading />;
-	}
 
 	return (
 		<>
@@ -185,89 +52,11 @@ function Index() {
 									This module is currently only available for Discourse.
 								</Alert>
 
-								<FormControl fullWidth>
-									<FormControlLabel
-										control={
-											<Switch
-												checked={isViolationDetectionOn}
-												onChange={(event) =>
-													setIsViolationDetectionOn(event.target.checked)
-												}
-											/>
-										}
-										label="Violation Detection"
-									/>
-									<FormHelperText>
-										Activate/Deactivate the violation detection module.
-									</FormHelperText>
-								</FormControl>
-
-								{isViolationDetectionOn && (
-									<FormControl fullWidth error={!!emailError}>
-										<FormLabel>Moderator Emails</FormLabel>
-										<Autocomplete
-											multiple
-											freeSolo
-											value={emails}
-											onChange={handleEmailChange}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													variant="filled"
-													label="Moderator Emails"
-													placeholder="Enter Moderator Emails"
-													error={!!emailError}
-													helperText={
-														emailError || "Enter valid moderator emails."
-													}
-												/>
-											)}
-											options={[]}
-											renderTags={(value, getTagProps) => {
-												return value.map((option, index) => (
-													<Chip
-														label={option}
-														{...getTagProps({ index })}
-														variant="outlined"
-														size="small"
-														sx={{
-															borderRadius: "4px",
-															borderColor: "#D1D1D1",
-															backgroundColor: "white",
-															color: "black",
-														}}
-													/>
-												));
-											}}
-										/>
-										<FormHelperText>
-											Enter the email addresses of the moderators who should be
-											notified when a violation is detected.
-										</FormHelperText>
-									</FormControl>
+								{community ? (
+									<ViolationDetection community={community} />
+								) : (
+									<Loading />
 								)}
-
-								<div className="mt-6 flex flex-col items-center justify-between space-y-3 md:flex-row md:space-y-0">
-									<TcButton
-										text="Cancel"
-										variant="outlined"
-										className="md:w-1/4"
-										onClick={() => router.push("/community-settings")}
-									/>
-									<TcButton
-										text={
-											isLoading ? (
-												<CircularProgress size={20} color="inherit" />
-											) : (
-												"Save Changes"
-											)
-										}
-										disabled={isLoading || !!emailError}
-										variant="contained"
-										className="md:w-1/4"
-										onClick={handleDiscourseViolation}
-									/>
-								</div>
 							</div>
 						</div>
 					}
