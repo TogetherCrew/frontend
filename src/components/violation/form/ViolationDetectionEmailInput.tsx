@@ -11,7 +11,7 @@ export function ViolationDetectionEmailInput({ selectedEmails, setSelectedEmails
 
   const [emailError, setEmailError] = useState<string | null>(null);
 
-  const setErrors = (error: string) => {
+  const setErrors = (error: string | null) => {
     setEmailError(error)
     setFormError(error)
   }
