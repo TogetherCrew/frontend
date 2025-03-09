@@ -60,7 +60,9 @@ function DisabledCard({ platform }: IReputationItemProps) {
 
 function ActiveCard({ platform }: IReputationItemProps) {
 
-  const { data, loading, error } = useApi<ICommunityPlatfromProps>(`/platforms/${platform.id}/reputation-score`);
+  const platformId = platform.id || platform._id
+
+  const { data, loading, error } = useApi<ICommunityPlatfromProps>(`/platforms/${platformId}/reputation-score`);
 
   if (loading) return <Loading />
 
@@ -77,9 +79,9 @@ function ActiveCard({ platform }: IReputationItemProps) {
 }
 
 function ReputationItem({ platform }: IReputationItemProps) {
+  console.log(platform)
 
   if (!ALLOW_LIST.includes(platform.name)) return <DisabledCard platform={platform} />;
-
   return <ActiveCard platform={platform} />
 }
 

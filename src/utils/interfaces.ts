@@ -173,6 +173,7 @@ export interface Permissions {
 }
 
 export interface ICommunityPlatfromProps {
+  _id: string;
   id: string;
   name: string;
   metadata: {
