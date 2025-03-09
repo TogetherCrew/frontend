@@ -45,7 +45,6 @@ function TcHivemindWebsite({
             label='Enable the AI assistant to use the selected website as a source of information.'
           />
         </FormControl>
-        {JSON.stringify(defaultWebsiteHivemindConfig)}
       </div>
       <div className='mt-6 flex flex-col items-center justify-between space-y-3 md:flex-row md:space-y-0'>
         <TcButton
