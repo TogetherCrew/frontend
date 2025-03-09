@@ -12,7 +12,7 @@ import { IPlatformProps } from '../../../utils/interfaces';
 interface TcHivemindWebsiteProps {
   isLoading: boolean;
   defaultWebsiteHivemindConfig: any;
-  handlePatchHivemindWebsite: () => void;
+  handlePatchHivemindWebsite: (data: any) => void;
 }
 
 function TcHivemindWebsite({
@@ -23,28 +23,28 @@ function TcHivemindWebsite({
 
   console.log(defaultWebsiteHivemindConfig);
 
-  // const [isActivated, setIsActivated] = useState<boolean>(
-  //   defaultWebsiteHivemindConfig.activated || false
-  // );
+  const [activatedAt, setActivatedAt] = useState<Date | null>(
+    defaultWebsiteHivemindConfig.activatedAt || null
+  );
 
   const handleWebsiteHivemind = () => {
-    handlePatchHivemindWebsite() // { activated: isActivated });
+    handlePatchHivemindWebsite({ activatedAt });
   };
 
   return (
     <>
       <div className='flex flex-col items-center justify-between space-y-3'>
-        {/* <FormControl fullWidth className='flex flex-row items-center'>
+        <FormControl fullWidth className='flex flex-row items-center'>
           <FormControlLabel
             control={
               <Switch
-                checked={isActivated}
-                onChange={(e) => setIsActivated(e.target.checked)}
+                checked={activatedAt !== null}
+                onChange={(e) => setActivatedAt(e.target.checked ? new Date() : null)}
               />
             }
             label='Enable the AI assistant to use the selected website as a source of information.'
           />
-        </FormControl> */}
+        </FormControl>
         {JSON.stringify(defaultWebsiteHivemindConfig)}
       </div>
       <div className='mt-6 flex flex-col items-center justify-between space-y-3 md:flex-row md:space-y-0'>

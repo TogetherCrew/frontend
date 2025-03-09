@@ -364,10 +364,11 @@ function HivemindSettings() {
         break;
       case 'website':
         src = '';
-        text = truncateCenter(
-          platform?.metadata?.resources[0].replace('https://', ''),
-          15
-        );
+        text = `${platform?.metadata?.resources?.length || 0} resources`;
+        // truncateCenter(
+        //   platform?.metadata?.resources[0].replace('https://', ''),
+        //   15
+        // );
         break;
       default:
         src = '';
@@ -568,13 +569,13 @@ function HivemindSettings() {
             {platforms && platforms.length > 0 && (
               <TcHivemindWebsite
                 isLoading={loading}
-                defaultWebsiteHivemindConfig={platforms[0]}
-                // hivemindModule?.options?.platforms.find(
-                //   (platform) => platform.name === 'website'
-                // )?.metadata || {scheduleId: '' }
-                // }
-                handlePatchHivemindWebsite={() =>
-                  handlePatchModule('website')
+                defaultWebsiteHivemindConfig={
+                  hivemindModule?.options?.platforms.find(
+                    (platform) => platform.name === 'website'
+                  )?.metadata || { activatedAt: null }
+                }
+                handlePatchHivemindWebsite={(data: any) =>
+                  handlePatchModule('website', data)
                 }
               />
             )}

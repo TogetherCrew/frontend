@@ -147,7 +147,7 @@ function TcWebsite({
 					>
 						<TcAvatar sizes="small">W</TcAvatar>
 						<TcButton
-							text={truncateCenter(platform?.metadata?.resources[0], 14)}
+							text={`${platform.metadata?.resources.length || 0} Resources`}
 							className="w-10/12"
 							variant="text"
 							color="primary"
