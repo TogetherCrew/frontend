@@ -8,11 +8,10 @@ import {
 import router from 'next/router';
 
 import TcButton from '../../shared/TcButton';
-import { IPlatformProps } from '../../../utils/interfaces';
 interface TcHivemindWebsiteProps {
   isLoading: boolean;
   defaultWebsiteHivemindConfig: any;
-  handlePatchHivemindWebsite: (data: any) => void;
+  handlePatchHivemindWebsite: (isActivated: boolean) => void;
 }
 
 function TcHivemindWebsite({
@@ -21,14 +20,12 @@ function TcHivemindWebsite({
   handlePatchHivemindWebsite,
 }: TcHivemindWebsiteProps) {
 
-  console.log(defaultWebsiteHivemindConfig);
-
-  const [activatedAt, setActivatedAt] = useState<Date | null>(
-    defaultWebsiteHivemindConfig.activatedAt || null
+  const [isActivated, setIsActivated] = useState<boolean>(
+    defaultWebsiteHivemindConfig.activated || false
   );
 
-  const handleWebsiteHivemind = () => {
-    handlePatchHivemindWebsite({ activatedAt });
+  const handleChange = () => {
+    handlePatchHivemindWebsite(isActivated);
   };
 
   return (
@@ -38,8 +35,8 @@ function TcHivemindWebsite({
           <FormControlLabel
             control={
               <Switch
-                checked={activatedAt !== null}
-                onChange={(e) => setActivatedAt(e.target.checked ? new Date() : null)}
+                checked={isActivated}
+                onChange={(e) => setIsActivated(e.target.checked)}
               />
             }
             label='Enable the AI assistant to use the selected website as a source of information.'
@@ -63,7 +60,7 @@ function TcHivemindWebsite({
           }
           variant='contained'
           className='md:w-1/4'
-          onClick={() => handleWebsiteHivemind()}
+          onClick={() => handleChange()}
         />
       </div>
     </>

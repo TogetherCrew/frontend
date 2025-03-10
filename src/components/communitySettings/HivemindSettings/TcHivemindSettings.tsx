@@ -236,8 +236,8 @@ function HivemindSettings() {
 
       let patchPayload = {};
 
+      setLoading(true);
       if (moduleType === 'discord') {
-        setLoading(true);
         patchPayload = {
           platforms: [
             {
@@ -250,7 +250,6 @@ function HivemindSettings() {
           ],
         };
       } else if (moduleType === 'google') {
-        setLoading(true);
         patchPayload = {
           platforms: [
             {
@@ -263,7 +262,6 @@ function HivemindSettings() {
           ],
         };
       } else if (moduleType === 'github') {
-        setLoading(true);
         patchPayload = {
           platforms: [
             {
@@ -276,7 +274,6 @@ function HivemindSettings() {
           ],
         };
       } else if (moduleType === 'notion') {
-        setLoading(true);
         patchPayload = {
           platforms: [
             {
@@ -289,7 +286,6 @@ function HivemindSettings() {
           ],
         };
       } else if (moduleType === 'mediaWiki') {
-        setLoading(true);
         patchPayload = {
           platforms: [
             {
@@ -302,14 +298,13 @@ function HivemindSettings() {
           ],
         };
       } else if (moduleType === 'website') {
-        setLoading(true);
         patchPayload = {
           platforms: [
             {
               platform: platforms[platform].id,
               name: 'website',
               metadata: {
-                ...payload,
+                activated: payload,
               },
             },
           ],
@@ -326,7 +321,6 @@ function HivemindSettings() {
         showMessage('AI assistant module updated successfully', 'success');
         await fetchPlatformsByType();
       }
-      setLoading(false);
     } catch (error) {
       console.error(error);
     } finally {
@@ -572,11 +566,12 @@ function HivemindSettings() {
                 defaultWebsiteHivemindConfig={
                   hivemindModule?.options?.platforms.find(
                     (platform) => platform.name === 'website'
-                  )?.metadata || { activatedAt: null }
+                  )?.metadata || { activated: false }
                 }
-                handlePatchHivemindWebsite={(data: any) =>
-                  handlePatchModule('website', data)
-                }
+                handlePatchHivemindWebsite={(payload: any) => {
+                  console.log(payload);
+                  handlePatchModule('website', payload);
+                }}
               />
             )}
           </TabPanel>
