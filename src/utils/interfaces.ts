@@ -173,6 +173,7 @@ export interface Permissions {
 }
 
 export interface ICommunityPlatfromProps {
+  _id: string;
   id: string;
   name: string;
   metadata: {
@@ -185,6 +186,10 @@ export interface ICommunityPlatfromProps {
     analyzerStartedAt?: string;
     isInProgress?: boolean;
     isFetchingInitialData?: boolean;
+    chat?: {
+      title: string;
+      id: string;
+    };
   };
   disconnectedAt: string | null;
 }

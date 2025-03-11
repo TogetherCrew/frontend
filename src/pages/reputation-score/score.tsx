@@ -11,7 +11,6 @@ import TcBoxContainer from '@/components/shared/TcBox/TcBoxContainer';
 import useAppStore from '@/store/useStore';
 
 import { useSnackbar } from '@/context/SnackbarContext';
-import { withRoles } from '@/utils/withRoles';
 
 const ScorePage = () => {
   const { showMessage } = useSnackbar();

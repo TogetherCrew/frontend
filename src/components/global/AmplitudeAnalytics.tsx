@@ -9,7 +9,7 @@ const AmplitudeAnalytics = () => {
     const AMPLITUDEANALYTICS_TOKEN: string | undefined =
       conf.AMPLITUDEANALYTICS_TOKEN;
 
-    if (process.env.NODE_ENV === 'production' && AMPLITUDEANALYTICS_TOKEN) {
+    if (AMPLITUDEANALYTICS_TOKEN) {
       amplitude.init(AMPLITUDEANALYTICS_TOKEN, undefined, {
         defaultTracking: {
           sessions: true,

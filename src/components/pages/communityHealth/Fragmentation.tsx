@@ -8,6 +8,7 @@ import { FiAlertTriangle } from 'react-icons/fi';
 import { HiOutlineArrowRight } from 'react-icons/hi';
 
 import GaugeChart from '@/components/global/GaugeChart';
+import Loading from '@/components/global/Loading';
 
 import enmeshed from '@/assets/svg/enmeshed.svg';
 import fragmented from '@/assets/svg/fragmented.svg';
@@ -125,9 +126,8 @@ function Fragmentation({ scoreData }: FragmentationProps) {
               ): string {
                 return `${parseFloat(
                   scoreData.fragmentationScore.toFixed(0)
-                )} / ${
-                  scoreData.fragmentationScoreRange.maximumFragmentationScore
-                }`;
+                )} / ${scoreData.fragmentationScoreRange.maximumFragmentationScore
+                  }`;
               },
             },
           },
@@ -165,13 +165,7 @@ function Fragmentation({ scoreData }: FragmentationProps) {
             {!scoreData?.fragmentationScore ? (
               <div className='flex min-h-[320px] flex-col space-y-7 px-4 text-center md:px-2'>
                 <div className='mt-16'>
-                  <FiAlertTriangle
-                    className='mx-auto text-error-600'
-                    size={25}
-                  />
-                  <p className='pt-4 text-sm font-semibold text-error-600'>
-                    No data available
-                  </p>
+                  <Loading />
                 </div>
                 <span className='text-sm'>
                   Please ensure that your Discord connection is properly

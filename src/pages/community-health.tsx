@@ -37,6 +37,8 @@ function CommunityHealth() {
     )?.id;
 
     if (platformId) {
+      setDecentralisationScoreData(null);
+      setFragmentationScoreData(null);
       Promise.all([
         getDecentralisation(platformId),
         getFragmentation(platformId),
