@@ -358,11 +358,7 @@ function HivemindSettings() {
         break;
       case 'website':
         src = '';
-        text = `${platform?.metadata?.resources?.length || 0} resources`;
-        // truncateCenter(
-        //   platform?.metadata?.resources[0].replace('https://', ''),
-        //   15
-        // );
+        text = `${platform?.metadata?.resources?.length || 0} websites`;
         break;
       default:
         src = '';
