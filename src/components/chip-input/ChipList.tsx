@@ -9,6 +9,11 @@ interface ChipListProps {
 function ChipList({ items, handleChange }: ChipListProps) {
 
   const handleAdd = (item: string) => {
+    // check if the item is already in the list
+    console.log(items, item);
+    if (items.includes(item) || item === '') {
+      return;
+    }
     handleChange([...items, item]);
   }
 
@@ -18,12 +23,12 @@ function ChipList({ items, handleChange }: ChipListProps) {
 
   return (
     <div className="flex flex-col gap-2">
+      <ChipInput handleAdd={handleAdd} />
       <div className="flex flex-wrap gap-2">
         {items.map((item) => (
           <Chip key={item} label={item} handleRemove={handleRemove} />
         ))}
       </div>
-      <ChipInput handleAdd={handleAdd} />
     </div>
   )
 }

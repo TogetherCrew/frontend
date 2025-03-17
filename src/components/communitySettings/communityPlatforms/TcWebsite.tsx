@@ -26,14 +26,6 @@ interface TcWebsiteProps {
 	handleUpdateCommunityPlatform: () => void;
 }
 
-// const resources = [
-// 	"https://www.togethercrew.com",
-// 	"https://www.rndao.io",
-// 	"https://meetwithwallet.xyz/",
-// 	"https://collabberry.xyz/",
-// 	"https://www.google.com",
-// ]
-
 function TcWebsite({
 	isLoading,
 	connectedPlatforms,
@@ -82,7 +74,7 @@ function TcWebsite({
 			});
 			if (data) {
 				handleUpdateCommunityPlatform();
-				setIsOpen(false);
+				// setIsOpen(false);
 				showMessage("Platform updated successfully.", "success");
 			}
 		} else {
@@ -93,7 +85,7 @@ function TcWebsite({
 			});
 			if (data) {
 				handleUpdateCommunityPlatform();
-				setIsOpen(false);
+				// setIsOpen(false);
 				showMessage("Platform connected successfully.", "success");
 			}
 		}
@@ -105,7 +97,6 @@ function TcWebsite({
 			if (data === "") {
 				setIsDeleteDialogOpen(false);
 				setActivePlatform(null);
-				setUrl("");
 				showMessage("Platform disconnected successfully.", "success");
 				handleUpdateCommunityPlatform();
 			}
@@ -123,7 +114,7 @@ function TcWebsite({
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">
 			<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
 				<span className="mx-auto">
-					<TcCommunityPlatformIcon platform="Website" />
+					<TcCommunityPlatformIcon platform="Website" size={40} />
 				</span>
 				<div className="mx-auto w-10/12 text-center">
 					<TcButton
@@ -181,7 +172,7 @@ function TcWebsite({
 					</div>
 					<div className="space-y-3 p-4">
 						<div className="flex flex-col md:flex-row md:items-center md:space-x-3">
-							<TcCommunityPlatformIcon platform="Website" />
+							<TcCommunityPlatformIcon platform="Website" size={24} />
 							<div>
 								<TcText
 									text="Website"
@@ -189,6 +180,13 @@ function TcWebsite({
 									fontWeight="bold"
 								/>
 							</div>
+						</div>
+						<div>
+							<TcText
+								text="Enter the URLs of the resources you want to connect to your community."
+								variant="body2"
+								className="text-gray-500 text-xs"
+							/>
 						</div>
 						<ChipList items={items} handleChange={handleChange} />
 
