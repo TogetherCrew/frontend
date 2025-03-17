@@ -226,7 +226,7 @@ export interface IModuleGooglePlatformMetadata {
 
 export interface IPlatformModuleProps {
   platform: string;
-  name: 'discord' | 'google' | 'github' | 'notion' | 'mediaWiki';
+  name: 'discord' | 'google' | 'github' | 'notion' | 'mediaWiki' | 'website';
   _i?: string;
   metadata: IModuleDiscordPlatformMetadata;
 }
