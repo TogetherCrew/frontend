@@ -115,7 +115,7 @@ function TcWebsite({
 			{connectedPlatforms.length === 0 ?
 				<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
 					<span className="mx-auto">
-						<TcCommunityPlatformIcon platform="Website" size={40} />
+						<TcCommunityPlatformIcon platform="Website" size={32} />
 					</span>
 					<div className="mx-auto w-10/12 text-center">
 						<TcButton
@@ -137,7 +137,7 @@ function TcWebsite({
 						className="flex h-[6rem] w-[10rem] flex-col items-center justify-center space-y-1.5 overflow-hidden rounded-sm py-2 shadow-none"
 						key={index}
 					>
-						<TcAvatar sizes="small">W</TcAvatar>
+						<TcCommunityPlatformIcon platform="Website" size={32} />
 						<TcButton
 							text={`${platform.metadata?.resources.length || 0} Resources`}
 							className="w-10/12"

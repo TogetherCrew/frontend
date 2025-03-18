@@ -57,7 +57,7 @@ function TcGithubIntegration({
 				showMessage("Platform disconnected successfully.", "success");
 				handleUpdateCommunityPlatform();
 			}
-		} catch (error) {}
+		} catch (error) { }
 	};
 
 	const handleClose = () => {
@@ -68,7 +68,7 @@ function TcGithubIntegration({
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">
 			<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
 				<span className="mx-auto">
-					<TcCommunityPlatformIcon platform="Github" />
+					<TcCommunityPlatformIcon platform="Github" size={32} />
 				</span>
 				<div className="mx-auto w-10/12 text-center">
 					<TcButton
@@ -91,8 +91,8 @@ function TcGithubIntegration({
 						key={index}
 					>
 						<TcAvatar
-							sizes="small"
 							src={platform?.metadata?.account?.avatarUrl}
+							sx={{ width: 32, height: 32 }}
 						/>
 						<TcButton
 							text={truncateCenter(platform?.metadata?.account?.login, 10)}

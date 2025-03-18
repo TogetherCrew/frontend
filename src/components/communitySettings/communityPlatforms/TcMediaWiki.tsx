@@ -117,7 +117,7 @@ function TcMediaWiki({
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">
 			<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
 				<span className="mx-auto">
-					<TcCommunityPlatformIcon platform="MediaWiki" />
+					<TcCommunityPlatformIcon platform="MediaWiki" size={32} />
 				</span>
 				<div className="mx-auto w-10/12 text-center">
 					<TcButton
@@ -139,7 +139,7 @@ function TcMediaWiki({
 						className="flex h-[6rem] w-[10rem] flex-col items-center justify-center space-y-1.5 overflow-hidden rounded-sm py-2 shadow-none"
 						key={index}
 					>
-						<TcAvatar sizes="small">W</TcAvatar>
+						<TcCommunityPlatformIcon platform="MediaWiki" size={32} />
 						<TcButton
 							text={truncateCenter(platform?.metadata?.baseURL, 14)}
 							className="w-10/12"
