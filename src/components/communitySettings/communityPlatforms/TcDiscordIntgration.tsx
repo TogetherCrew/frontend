@@ -31,7 +31,7 @@ function TcDiscordIntgration({
 
 	const addPlatform = searchParams.get("addPlatform");
 
-	const { userProfile,connectNewPlatform } = useAppStore();
+	const { userProfile, connectNewPlatform } = useAppStore();
 
 	const hasDiscordIdentity = userProfile?.identities?.some(
 		(identity: any) => identity.provider === "discord",
@@ -51,7 +51,7 @@ function TcDiscordIntgration({
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">
 			<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
 				<span className="mx-auto">
-					<TcCommunityPlatformIcon platform="Discord" />
+					<TcCommunityPlatformIcon platform="Discord" size={32} />
 				</span>
 				<div className="mx-auto w-10/12 text-center">
 					<TcButton
@@ -76,7 +76,7 @@ function TcDiscordIntgration({
 					>
 						<TcAvatar
 							src={`${conf.DISCORD_CDN}icons/${platform.metadata.id}/${platform.metadata.icon}`}
-							sizes="small"
+							sx={{ width: 32, height: 32 }}
 						/>
 						<TcDiscordIntegrationSettingsDialog
 							platform={platform}

@@ -29,6 +29,51 @@ interface TcTabPanelProps {
 	value: number;
 }
 
+interface ModuleConfig {
+	name: string;
+	displayName: string;
+	route: string;
+	moduleName: string;
+}
+
+interface PlatformConfig {
+	name: string;
+	component: React.ComponentType<any>;
+	tabIndex: number;
+}
+
+const PLATFORM_CONFIGS: PlatformConfig[] = [
+	{ name: "discord", component: TcDiscordIntgration, tabIndex: 0 },
+	{ name: "telegram", component: TcTelegram, tabIndex: 1 },
+	{ name: "website", component: TcWebsite, tabIndex: 2 },
+	{ name: "discourse", component: TcDiscourse, tabIndex: 3 },
+	{ name: "github", component: TcGithubIntegration, tabIndex: 4 },
+	{ name: "notion", component: TcNotionIntegration, tabIndex: 5 },
+	{ name: "mediaWiki", component: TcMediaWiki, tabIndex: 6 },
+	// { name: "gdrive", component: TcGdriveIntegration, tabIndex: 7 },
+];
+
+const MODULE_CONFIGS: ModuleConfig[] = [
+	{
+		name: "hivemind",
+		displayName: "Q&A AI assistant",
+		route: "/community-settings/ai-assistant",
+		moduleName: "hivemind",
+	},
+	{
+		name: "violationDetection",
+		displayName: "Violation Detection",
+		route: "/community-settings/violation-detection",
+		moduleName: "violationDetection",
+	},
+	// {
+	// 	name: "reputationScore",
+	// 	displayName: "Reputation Score",
+	// 	route: "/community-settings/reputation-score",
+	// 	moduleName: "dynamicNft",
+	// },
+];
+
 function TabPanel({ children, value, index, ...other }: TcTabPanelProps) {
 	return (
 		<div
@@ -53,74 +98,24 @@ function a11yProps(index: number) {
 function TcCommunityPlatforms() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-
-	const managePlatform = searchParams.get("managePlatform");
-	const addPlatform = searchParams.get("addPlatform");
-
-	useEffect(() => {
-		const platform = managePlatform || addPlatform;
-
-		switch (platform) {
-			case "discord":
-				setActiveTab(0);
-				break;
-			case "github":
-				setActiveTab(1);
-				break;
-			case "discourse":
-				setActiveTab(2);
-				break;
-			case "notion":
-				setActiveTab(3);
-				break;
-			case "mediawiki":
-				setActiveTab(4);
-				break;
-			case "telegram":
-				setActiveTab(5);
-				break;
-			case "website":
-				setActiveTab(6);
-				break;
-			default:
-				setActiveTab(0);
-				break;
-		}
-	}, [managePlatform, addPlatform]);
-
 	const { retrievePlatforms, retrieveModules, createModule } = useAppStore();
+
 	const [platforms, setPlatforms] = useState<IPlatformProps[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [activeTab, setActiveTab] = useState<number>(0);
-	const [hivemindManageIsLoading, setHivemindManageIsLoading] =
-		useState<boolean>(false);
-	const [
-		violationDetectionManageIsLoading,
-		setViolationDetectionManageIsLoading,
-	] = useState<boolean>(false);
-	const [reputationScoreManageIsLoading, setReputationScoreManageIsLoading] =
-		useState<boolean>(false);
+	const [moduleLoadingStates, setModuleLoadingStates] = useState<Record<string, boolean>>({});
 
-	const communityId =
-		StorageService.readLocalStorage<IDiscordModifiedCommunity>("community")?.id;
+	const communityId = StorageService.readLocalStorage<IDiscordModifiedCommunity>("community")?.id;
+
+	useEffect(() => {
+		const platform = searchParams.get("managePlatform") || searchParams.get("addPlatform");
+		const config = PLATFORM_CONFIGS.find(p => p.name === platform);
+		setActiveTab(config?.tabIndex ?? 0);
+	}, [searchParams]);
 
 	const fetchPlatformsByType = async () => {
-		const platformNames = [
-			"discord",
-			"github",
-			"discourse",
-			"notion",
-			"mediaWiki",
-			"telegram",
-			// "google",
-			"website",
-		];
-
-		const platformName = platformNames[activeTab];
-
-		if (!platformName) {
-			return;
-		}
+		const platformName = PLATFORM_CONFIGS[activeTab]?.name;
+		if (!platformName) return;
 
 		setIsLoading(true);
 		try {
@@ -141,80 +136,26 @@ function TcCommunityPlatforms() {
 		fetchPlatformsByType();
 	}, [activeTab]);
 
-	const handleManageHivemindModule = async () => {
+	const handleModuleManagement = async (moduleConfig: ModuleConfig) => {
+		setModuleLoadingStates(prev => ({ ...prev, [moduleConfig.name]: true }));
 		try {
-			setHivemindManageIsLoading(true);
-			const hivemindModules = await retrieveModules({
+			const modules = await retrieveModules({
 				community: communityId,
-				name: "hivemind",
+				name: moduleConfig.moduleName,
 			});
 
-			if (hivemindModules.results.length > 0) {
-				router.push("/community-settings/ai-assistant");
-			} else {
-				await createModule({ name: "hivemind", community: communityId });
-				router.push("/community-settings/ai-assistant");
-			}
-			setHivemindManageIsLoading(false);
-		} catch (error) {
-			console.log("error", error);
-		} finally {
-			setHivemindManageIsLoading(false);
-		}
-	};
-
-	const handleViolationDetectionModule = async () => {
-		try {
-			setViolationDetectionManageIsLoading(true);
-			const hivemindModules = await retrieveModules({
-				community: communityId,
-				name: "violationDetection",
-			});
-
-			if (hivemindModules.results.length > 0) {
-				router.push("/community-settings/violation-detection");
-			} else {
+			if (!modules.results.length) {
 				await createModule({
-					name: "violationDetection",
-					community: communityId,
+					name: moduleConfig.moduleName,
+					community: communityId
 				});
-				router.push("/community-settings/violation-detection");
 			}
-			setViolationDetectionManageIsLoading(false);
+			router.push(moduleConfig.route);
 		} catch (error) {
-			console.log("error", error);
+			console.error(`Error managing ${moduleConfig.name}:`, error);
 		} finally {
-			setViolationDetectionManageIsLoading(false);
+			setModuleLoadingStates(prev => ({ ...prev, [moduleConfig.name]: false }));
 		}
-	};
-
-	const handleReputationScoreModule = async () => {
-		try {
-			setReputationScoreManageIsLoading(true);
-			const reputationScoreModule = await retrieveModules({
-				community: communityId,
-				name: "dynamicNft",
-			});
-
-			if (reputationScoreModule.results.length > 0) {
-				router.push("/community-settings/reputation-score");
-			} else {
-				await createModule({
-					name: "dynamicNft",
-					community: communityId,
-				});
-				router.push("/community-settings/reputation-score");
-			}
-			setReputationScoreManageIsLoading(false);
-		} catch (error) {
-			console.log("error", error);
-		} finally {
-			setReputationScoreManageIsLoading(false);
-		}
-	};
-
-	const handleUpdateCommunityPlatform = async () => {
-		await fetchPlatformsByType();
 	};
 
 	return (
@@ -231,128 +172,50 @@ function TcCommunityPlatforms() {
 						value={activeTab}
 						onChange={(event, newValue) => setActiveTab(newValue)}
 					>
-						{Object.keys(IntegrationPlatform).map((platform, index) => (
-							<Tab
-								className={clsx(
-									"mr-3 min-h-[6rem] min-w-[10rem] rounded-sm shadow-lg",
-									activeTab === index
-										? "bg-secondary/80 text-white"
-										: ![
-											"Discord",
-											"Discourse",
-											"Github",
-											"Notion",
-											"MediaWiki",
-											"Telegram",
-											"Website",
-										].includes(platform)
-											? "bg-white"
-											: "bg-white text-black",
-								)}
-								key={index}
-								label={
-									<div className="flex flex-col items-center space-x-2">
-										<TcCommunityPlatformIcon platform={platform} />
-										<TcText text={platform} variant="body2" />
-										{platform === "GDrive" && (
-											<TcText
-												variant="caption"
-												className="text-gray-300"
-												text="Coming soon"
-											/>
-										)}
-									</div>
-								}
-								disabled={
-									![
-										"Discord",
-										"Discourse",
-										"Github",
-										"Notion",
-										"MediaWiki",
-										"Telegram",
-										"Website",
-									].includes(platform)
-								}
-								{...a11yProps(index)}
-							/>
-						))}
+						{Object.keys(IntegrationPlatform).map((platform, index) => {
+							const isSupported = PLATFORM_CONFIGS.some(config =>
+								config.name.toLowerCase() === platform.toLowerCase()
+							);
+
+							return (
+								<Tab
+									className={clsx(
+										"mr-3 min-h-[6rem] min-w-[10rem] rounded-sm shadow-lg",
+										activeTab === index
+											? "bg-secondary/80 text-white"
+											: !isSupported
+												? "bg-white"
+												: "bg-white text-black",
+									)}
+									key={index}
+									label={
+										<div className="flex flex-col items-center space-y-2">
+											<TcCommunityPlatformIcon platform={platform} size={32} />
+											<TcText text={platform} variant="caption" />
+										</div>
+									}
+									disabled={!isSupported}
+									{...a11yProps(index)}
+								/>
+							);
+						})}
 					</Tabs>
-					{activeTab === 0 && (
-						<TabPanel value={activeTab} index={0}>
-							<TcDiscordIntgration
-								isLoading={isLoading}
-								platformType="discord"
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 1 && (
-						<TabPanel value={activeTab} index={1}>
-							<TcGithubIntegration
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 2 && (
-						<TabPanel value={activeTab} index={2}>
-							<TcDiscourse
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 3 && (
-						<TabPanel value={activeTab} index={3}>
-							<TcNotionIntegration
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 4 && (
-						<TabPanel value={activeTab} index={4}>
-							<TcMediaWiki
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 5 && (
-						<TabPanel value={activeTab} index={5}>
-							<TcTelegram
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 6 && (
-						<TabPanel value={activeTab} index={6}>
-							<TcWebsite
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
-					{activeTab === 7 && (
-						<TabPanel value={activeTab} index={7}>
-							<TcGdriveIntegration
-								isLoading={isLoading}
-								connectedPlatforms={platforms}
-								handleUpdateCommunityPlatform={handleUpdateCommunityPlatform}
-							/>
-						</TabPanel>
-					)}
+
+					{PLATFORM_CONFIGS.map((config, index) => (
+						activeTab === index && (
+							<TabPanel key={config.name} value={activeTab} index={index}>
+								<config.component
+									isLoading={isLoading}
+									platformType={config.name}
+									connectedPlatforms={platforms}
+									handleUpdateCommunityPlatform={fetchPlatformsByType}
+								/>
+							</TabPanel>
+						)
+					))}
 				</Box>
 			</Paper>
+
 			<div className="py-4">
 				<div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-3 md:space-y-0">
 					<TcText text="Modules" variant="h6" fontWeight="bold" />
@@ -363,75 +226,31 @@ function TcCommunityPlatforms() {
 				</div>
 
 				<div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-					<TcCard
-						className="max-h-[6rem] min-h-[6rem] min-w-[10rem] max-w-[10rem] flex-grow"
-						children={
-							<div className="flex flex-col items-center justify-center space-y-2 py-4">
-								<TcText
-									text="Q&A AI assistant"
-									variant="subtitle1"
-									fontWeight="bold"
-								/>
-								<TcButton
-									text={
-										hivemindManageIsLoading ? (
-											<CircularProgress size={20} />
-										) : (
-											"Manage"
-										)
-									}
-									variant="text"
-									onClick={() => handleManageHivemindModule()}
-								/>
-							</div>
-						}
-					/>
-					<TcCard
-						className="max-h-[6rem] min-h-[6rem] min-w-[10rem] max-w-[10rem] flex-grow"
-						children={
-							<div className="flex flex-col items-center justify-center space-y-2 py-4">
-								<TcText
-									text="Violation Detection"
-									variant="subtitle1"
-									fontWeight="bold"
-								/>
-								<TcButton
-									text={
-										violationDetectionManageIsLoading ? (
-											<CircularProgress size={20} />
-										) : (
-											"Manage"
-										)
-									}
-									variant="text"
-									onClick={() => handleViolationDetectionModule()}
-								/>
-							</div>
-						}
-					/>
-					<TcCard
-						className="max-h-[6rem] min-h-[6rem] min-w-[10rem] max-w-[10rem] flex-grow"
-						children={
-							<div className="flex flex-col items-center justify-center space-y-2 py-4">
-								<TcText
-									text="Reputation Score"
-									variant="subtitle1"
-									fontWeight="bold"
-								/>
-								<TcButton
-									text={
-										reputationScoreManageIsLoading ? (
-											<CircularProgress size={20} />
-										) : (
-											"Manage"
-										)
-									}
-									variant="text"
-									onClick={() => handleReputationScoreModule()}
-								/>
-							</div>
-						}
-					/>
+					{MODULE_CONFIGS.map(moduleConfig => (
+						<TcCard
+							key={moduleConfig.name}
+							className="max-h-[6rem] min-h-[6rem] min-w-[10rem] max-w-[10rem] flex-grow"
+							children={
+								<div className="flex flex-col items-center justify-center space-y-2 py-4">
+									<TcText
+										text={moduleConfig.displayName}
+										variant="caption"
+									/>
+									<TcButton
+										text={
+											moduleLoadingStates[moduleConfig.name] ? (
+												<CircularProgress size={20} />
+											) : (
+												"Manage"
+											)
+										}
+										variant="text"
+										onClick={() => handleModuleManagement(moduleConfig)}
+									/>
+								</div>
+							}
+						/>
+					))}
 				</div>
 			</div>
 		</div>

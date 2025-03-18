@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CircularProgress } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import useAppStore from "@/store/useStore";
 
@@ -10,7 +11,6 @@ import { IDiscordModifiedCommunity, IPlatformProps } from "@/utils/interfaces";
 import TcConnectedTelegram from "./TcConnectedTelegram";
 import TcTelegramIntegrationDialog from "./TcTelegramIntegrationDialog";
 import TcConnectPlatformButton from "../TcConnectPlatformButton";
-import { useRouter } from "next/navigation";
 
 interface TcTelegramIntegrationProps {
 	isLoading: boolean;
@@ -45,7 +45,7 @@ function TcTelegram({
 
 	const handleClose = () => {
 		setIsDialogOpen(false);
-    router.push('/community-settings/?managePlatform=telegram')
+		router.push('/community-settings/?managePlatform=telegram')
 	};
 
 	return (

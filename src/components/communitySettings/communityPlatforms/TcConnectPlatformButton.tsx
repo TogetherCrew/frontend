@@ -28,7 +28,7 @@ function TcConnectPlatformButton({
           color: 'inherit',
         }}
       >
-        <TcCommunityPlatformIcon platform={platform} />
+        <TcCommunityPlatformIcon platform={platform} size={32} />
       </Stack>
       <Button
         className='text-sm'
