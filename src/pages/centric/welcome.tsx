@@ -35,11 +35,12 @@ import { withRoles } from "@/utils/withRoles";
 
 const DATA_SOURCES = [
 	{ title: "Discord", isComingSoon: false },
-	{ title: "Github", isComingSoon: false },
+	{ title: "Telegram", isComingSoon: false },
+	{ title: "Website", isComingSoon: false },
 	{ title: "Discourse", isComingSoon: false },
+	{ title: "Github", isComingSoon: false },
 	{ title: "Notion", isComingSoon: false },
 	{ title: "MediaWiki", isComingSoon: false },
-	{ title: "Telegram", isComingSoon: false },
 	{ title: "X", isComingSoon: true },
 	{ title: "Snapshot", isComingSoon: true },
 	{ title: "Google", isComingSoon: true },
