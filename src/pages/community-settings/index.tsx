@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 
 import useAppStore from "@/store/useStore";
 
+import { useToken } from "@/context/TokenContext";
+
 import TcCommunityPlatforms from "../../components/communitySettings/communityPlatforms";
 import TcRolesAndPermissions from "../../components/communitySettings/rolesAndPermissions";
 import TcCommunitySettings from "../../components/communitySettings/TcCommunitySettings";
@@ -15,6 +17,8 @@ import { withRoles } from "../../utils/withRoles";
 
 function Index() {
 	const router = useRouter();
+
+	const { community } = useToken();
 
 	const { userProfile } = useAppStore();
 
@@ -66,8 +70,11 @@ function Index() {
 							<TcCommunitySettings />
 							<div className="space-y-2">
 								<TcCommunityPlatforms />
-                {hasDiscordIdentity && <TcRolesAndPermissions />}
+								{hasDiscordIdentity && <TcRolesAndPermissions />}
 							</div>
+							<div className="text-xs text-gray-500">
+								<span>Community ID: </span>
+								<code>{community?._id || community?.id}</code></div>
 						</div>
 					}
 				/>
