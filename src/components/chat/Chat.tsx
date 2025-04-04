@@ -128,7 +128,8 @@ export function Chat() {
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} leading-8`}
             >
               {message.role === 'user' ? (
-                <div className="max-w-[80%] rounded-lg px-4 py-2  bg-gray-100" dangerouslySetInnerHTML={{ __html: message.text }}>
+                <div className="max-w-[80%] rounded-lg px-4 py-2  bg-gray-100">
+                  <FadeIn text={message.text} duration={100} />
                 </div>
               ) : (
                 <FadeIn text={replaceLinksWithAnchor(message.text)} />
