@@ -1,10 +1,11 @@
 export enum IntegrationPlatform {
   Discord = 'Discord',
-  Github = 'Github',
+  Telegram = 'Telegram',
+  Website = 'Website',
   Discourse = 'Discourse',
+  Github = 'Github',
   Notion = 'Notion',
   MediaWiki = 'MediaWiki',
-  Telegram = 'Telegram',
   X = 'X',
   Snapshot = 'Snapshot',
   GDrive = 'GDrive',

@@ -7,6 +7,8 @@ import { BiPlus } from 'react-icons/bi';
 import { IoClose, IoSettingsSharp } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
 
+import Loading from '@/components/global/Loading';
+
 import TcCommunityPlatformIcon from './TcCommunityPlatformIcon';
 import TcAvatar from '../../shared/TcAvatar';
 import TcButton from '../../shared/TcButton';
@@ -29,25 +31,27 @@ function TcNotionIntegration({
   handleUpdateCommunityPlatform,
 }: TcNotionIntegrationProps) {
   const searchParams = useSearchParams();
-  const { connectNewPlatform, deletePlatform, getUser } = useAppStore();
+  const { connectNewPlatform, deletePlatform, getUser, userProfile } = useAppStore();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
 
   const { showMessage } = useSnackbar();
 
-	const addPlatform = searchParams.get("addPlatform");
+  const addPlatform = searchParams.get("addPlatform");
 
-	useEffect(() => {
-		if (addPlatform === "notion" && userId) {
-			connectNewPlatform("notion", userId);
-		}
-	}, [addPlatform,userId]);
+  useEffect(() => {
+    if (addPlatform === "notion" && userId) {
+      connectNewPlatform("notion", userId);
+    }
+  }, [addPlatform, userId]);
 
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { id } = await getUser();
+      await getUser();
+      const { id } = userProfile;
+      console.log("userProfile", userProfile);
       setUserId(id);
     };
     fetchUser();
@@ -67,14 +71,18 @@ function TcNotionIntegration({
         showMessage('Platform disconnected successfully.', 'success');
         handleUpdateCommunityPlatform();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
+
+  if (!userId) {
+    return <Loading />
+  }
 
   return (
     <div className='flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5'>
       <Paper className='flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none'>
         <span className='mx-auto'>
-          <TcCommunityPlatformIcon platform='Notion' />
+          <TcCommunityPlatformIcon platform='Notion' size={32} />
         </span>
         <div className='mx-auto w-10/12 text-center'>
           <TcButton
@@ -97,8 +105,8 @@ function TcNotionIntegration({
             key={index}
           >
             <TcAvatar
-              sizes='small'
               src={platform?.metadata?.owner?.user?.avatar_url}
+              sx={{ width: 32, height: 32 }}
             ></TcAvatar>
             <TcButton
               text={truncateCenter(platform?.metadata?.owner?.user?.name, 10)}

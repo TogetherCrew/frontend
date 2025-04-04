@@ -7,6 +7,7 @@ import { IoClose, IoSettingsSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 
 import TcCommunityPlatformIcon from "./TcCommunityPlatformIcon";
+import ChipList from "../../chip-input/ChipList";
 import TcAvatar from "../../shared/TcAvatar";
 import TcButton from "../../shared/TcButton";
 import TcDialog from "../../shared/TcDialog";
@@ -19,79 +20,76 @@ import {
 	IDiscordModifiedCommunity,
 	IPlatformProps,
 } from "../../../utils/interfaces";
-
-interface TcMediaWikiProps {
+interface TcWebsiteProps {
 	isLoading: boolean;
 	connectedPlatforms: IPlatformProps[];
 	handleUpdateCommunityPlatform: () => void;
 }
 
-function TcMediaWiki({
+function TcWebsite({
 	isLoading,
 	connectedPlatforms,
 	handleUpdateCommunityPlatform,
-}: TcMediaWikiProps) {
+}: TcWebsiteProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
 	const addPlatform = searchParams.get("addPlatform");
-	const { createNewPlatform, deletePlatform } = useAppStore();
+	const { createNewPlatform, deletePlatform, patchPlatformById } = useAppStore();
 	const [activePlatform, setActivePlatform] = useState<IPlatformProps | null>(
 		null,
 	);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [url, setUrl] = useState<string>("");
-	const [urlError, setUrlError] = useState<string>("");
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
 	const { showMessage } = useSnackbar();
 
+	const [items, setItems] = useState<string[]>([]);
+
 	useEffect(() => {
-		if (addPlatform === "mediawiki") {
+		if (addPlatform === "website") {
 			handleOpenDialog();
 		}
 	}, [addPlatform]);
+
+	useEffect(() => {
+		setItems(activePlatform?.metadata?.resources || []);
+	}, [activePlatform]);
 
 	const communityId =
 		StorageService.readLocalStorage<IDiscordModifiedCommunity>("community")?.id;
 
 	const handleOpenDialog = (platform: IPlatformProps | null = null) => {
 		setActivePlatform(platform);
-		setUrl(platform?.metadata?.baseURL || "");
 		setIsOpen(true);
 	};
 
-	const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value;
-		setUrl(value);
-		validateUrl(value);
-	};
-
-	const validateUrl = (value: string) => {
-		const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.[^\s]{2,}([^\s]*)?$/i;
-		if (!regex.test(value)) {
-			setUrlError("Invalid URL. Please enter a valid site URL.");
+	const handleChange = async (items: string[]) => {
+		setItems(items);
+		let data = null;
+		if (activePlatform) {
+			data = await patchPlatformById({
+				id: activePlatform.id,
+				metadata: { resources: items },
+			});
+			if (data) {
+				handleUpdateCommunityPlatform();
+				// setIsOpen(false);
+				showMessage("Platform updated successfully.", "success");
+			}
 		} else {
-			setUrlError("");
+			data = await createNewPlatform({
+				community: communityId,
+				name: "website",
+				metadata: { resources: items },
+			});
+			if (data) {
+				handleUpdateCommunityPlatform();
+				// setIsOpen(false);
+				showMessage("Platform connected successfully.", "success");
+			}
 		}
-	};
-
-	const handleCreateNewPlatform = async () => {
-		const data = await createNewPlatform({
-			community: communityId,
-			name: "mediaWiki",
-			metadata: {
-				baseURL: url,
-				path: "/w/api.php",
-			},
-		});
-		if (data) {
-			handleUpdateCommunityPlatform();
-			setIsOpen(false);
-			setUrl("");
-			showMessage("Platform connected successfully.", "success");
-		}
-	};
+	}
 
 	const handleDisconnectPlatform = async (deleteType: "hard" | "soft") => {
 		try {
@@ -99,7 +97,6 @@ function TcMediaWiki({
 			if (data === "") {
 				setIsDeleteDialogOpen(false);
 				setActivePlatform(null);
-				setUrl("");
 				showMessage("Platform disconnected successfully.", "success");
 				handleUpdateCommunityPlatform();
 			}
@@ -110,38 +107,39 @@ function TcMediaWiki({
 
 	const handleClose = () => {
 		setIsOpen(false);
-		router.push('/community-settings/?managePlatform=mediawiki')
+		router.push('/community-settings/?managePlatform=website')
 	}
 
 	return (
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">
-			<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
-				<span className="mx-auto">
-					<TcCommunityPlatformIcon platform="MediaWiki" size={32} />
-				</span>
-				<div className="mx-auto w-10/12 text-center">
-					<TcButton
-						text="Connect"
-						variant="text"
-						color="primary"
-						startIcon={<BiPlus />}
-						onClick={() => handleOpenDialog()}
-					/>
-				</div>
-			</Paper>
+			{connectedPlatforms.length === 0 ?
+				<Paper className="flex h-[6rem] w-[10rem] flex-col items-center justify-center rounded-sm py-2 shadow-none">
+					<span className="mx-auto">
+						<TcCommunityPlatformIcon platform="Website" size={32} />
+					</span>
+					<div className="mx-auto w-10/12 text-center">
+						<TcButton
+							text="Connect"
+							variant="text"
+							color="primary"
+							startIcon={<BiPlus />}
+							onClick={() => handleOpenDialog()}
+						/>
+					</div>
+				</Paper> : <></>}
 			{isLoading ? (
 				<CircularProgress size={30} />
 			) : (
 				connectedPlatforms &&
-				connectedPlatforms[0]?.name === "mediaWiki" &&
+				connectedPlatforms[0]?.name === "website" &&
 				connectedPlatforms.map((platform, index) => (
 					<Paper
 						className="flex h-[6rem] w-[10rem] flex-col items-center justify-center space-y-1.5 overflow-hidden rounded-sm py-2 shadow-none"
 						key={index}
 					>
-						<TcCommunityPlatformIcon platform="MediaWiki" size={32} />
+						<TcCommunityPlatformIcon platform="Website" size={32} />
 						<TcButton
-							text={truncateCenter(platform?.metadata?.baseURL, 14)}
+							text={`${platform.metadata?.resources.length || 0} Resources`}
 							className="w-10/12"
 							variant="text"
 							color="primary"
@@ -175,75 +173,25 @@ function TcMediaWiki({
 					</div>
 					<div className="space-y-3 p-4">
 						<div className="flex flex-col md:flex-row md:items-center md:space-x-3">
-							<TcCommunityPlatformIcon platform="MediaWiki" />
+							<TcCommunityPlatformIcon platform="Website" size={24} />
 							<div>
 								<TcText
-									text="MediaWiki Account Profile"
+									text="Website"
 									variant="h6"
 									fontWeight="bold"
 								/>
 							</div>
 						</div>
-						{activePlatform ? (
-							<>
-								<div className="flex items-center space-x-3">
-									<TcText
-										text="MediaWiki URL:"
-										variant="body1"
-										fontWeight="bold"
-									/>
-									<TcText
-										text={`${activePlatform.metadata.baseURL}`}
-										variant="body1"
-									/>
-								</div>
-								<div className="flex items-center justify-between">
-									<TcButton
-										fullWidth
-										text="Disconnect"
-										startIcon={<MdDelete />}
-										variant="outlined"
-										onClick={() => {
-											setIsDeleteDialogOpen(true);
-											setIsOpen(false);
-										}}
-									/>
-								</div>
-							</>
-						) : (
-							<FormControl variant="filled" fullWidth size="medium">
-								<TextField
-									label="MediaWiki URL"
-									variant="filled"
-									placeholder="https://example.org"
-									value={url}
-									onChange={handleUrlChange}
-									error={!!urlError}
-									helperText={
-										urlError ||
-										"The base URL of your wiki, for example https://example.org"
-									}
-								/>
-							</FormControl>
-						)}
-					</div>
-					{!activePlatform && (
-						<div className="flex items-center justify-between px-5">
-							<TcButton
-								className="w-1/3"
-								text="Cancel"
-								variant="outlined"
-								onClick={() => setIsOpen(false)}
-							/>
-							<TcButton
-								className="w-1/3"
-								text="Confirm"
-								disabled={!!urlError || url === ""}
-								variant="contained"
-								onClick={handleCreateNewPlatform}
+						<div>
+							<TcText
+								text="Enter the URLs of the resources you want to connect to your community."
+								variant="body2"
+								className="text-gray-500 text-xs"
 							/>
 						</div>
-					)}
+						<ChipList items={items} handleChange={handleChange} />
+
+					</div>
 				</div>
 			</TcDialog>
 			<TcDialog
@@ -324,4 +272,4 @@ function TcMediaWiki({
 	);
 }
 
-export default TcMediaWiki;
+export default TcWebsite;
