@@ -111,15 +111,15 @@ const Sidebar = () => {
 	};
 
 	const renderMenuItem = (item: MenuItem) => (
-		<li key={item.name} className="py-4">
+		<li key={item.name}>
 			<Link href={item.path}>
 				<div
-					className={`cursor-pointer rounded-xl py-2 text-center delay-75 ease-in hover:bg-white
+					className={`cursor-pointer rounded-xl py-4 px-2 text-center delay-75 ease-in hover:bg-white
 						${currentRoute === item.path ? "bg-white" : ""}`}
 				>
 					{item.icon}
+					<p className="break-words text-center text-sm">{item.name}</p>
 				</div>
-				<p className="break-words text-center text-sm">{item.name}</p>
 			</Link>
 		</li>
 	);
@@ -141,7 +141,7 @@ const Sidebar = () => {
 	);
 
 	return (
-		<aside className="fixed hidden h-screen bg-gray-background shadow-inner md:block md:w-[100px] xl:w-[150px]">
+		<aside className="fixed hidden h-screen bg-gray-background shadow-inner md:block md:w-[120px] xl:w-[150px]">
 			<nav>
 				<div>
 					<div className="mx-auto my-4 flex flex-col justify-center text-center">
@@ -158,7 +158,7 @@ const Sidebar = () => {
 					</div>
 				</div>
 				<hr className="mx-2" />
-				<ul className="flex flex-col px-3">
+				<ul className="flex flex-col px-3 gap-2">
 					{getFilteredMenuItems().map(renderMenuItem)}
 				</ul>
 			</nav>
