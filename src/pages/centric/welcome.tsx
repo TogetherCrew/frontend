@@ -21,6 +21,7 @@ import { IoStatsChart } from "react-icons/io5";
 
 import TcCommunityPlatformIcon from "@/components/communitySettings/communityPlatforms/TcCommunityPlatformIcon";
 import SEO from "@/components/global/SEO";
+import DatasourceList from "@/components/home/datasources/DatasourceList";
 
 import useAppStore from "@/store/useStore";
 
@@ -137,40 +138,6 @@ function Welcome() {
 		}
 	};
 
-	const handleConnectPlatform = (dataSource: IDataSources) => () => {
-		router.push(
-			`/community-settings/?managePlatform=${dataSource.title.toLocaleLowerCase()}`,
-		);
-
-		setAmplitudeUserIdFromToken();
-
-		trackAmplitudeEvent({
-			eventType: "Connect Data Source",
-			eventProperties: {
-				communityId: community?.id,
-				communityName: community?.name,
-				platform: dataSource.title,
-			},
-		});
-	};
-
-	const handleManagePlatform = (dataSource: IDataSources) => () => {
-		router.push(
-			`/community-settings/?addPlatform=${dataSource.title.toLocaleLowerCase()}`,
-		);
-
-		setAmplitudeUserIdFromToken();
-
-		trackAmplitudeEvent({
-			eventType: "Manage Data Source",
-			eventProperties: {
-				communityId: community?.id,
-				communityName: community?.name,
-				platform: dataSource.title,
-			},
-		});
-	};
-
 	const handleOpenApplication = (application: string) => () => {
 		setAmplitudeUserIdFromToken();
 
@@ -257,8 +224,8 @@ function Welcome() {
 	};
 
 	return (
-		<>
-			<SEO title="Welcome" />
+		<div className="h-screen bg-gray-100">
+			<SEO title="Home" />
 			<Grid
 				container
 				direction="row"
@@ -273,9 +240,9 @@ function Welcome() {
 				}}
 			>
 				<Grid item xs={12} pb={2}>
-					<Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
+					<h2 className="text-2xl font-semibold py-4">
 						Welcome to <b className="text-secondary">{community?.name}</b>
-					</Typography>
+					</h2>
 					{!isAdmin && (
 						<Alert
 							className="flex w-full justify-start rounded-md"
@@ -291,115 +258,11 @@ function Welcome() {
 						item
 						xs={12}
 						md={6}
-						sx={{
-							borderRight: (theme) => {
-								return {
-									xs: "none",
-									md: `1px solid ${theme.palette.grey[300]}`,
-								};
-							},
-						}}
 						pr={{
 							md: 2,
 						}}
 					>
-						<Stack direction="row" alignItems="center" gap={1}>
-							<FaDatabase size={24} />
-							<Typography variant="h6" fontWeight="500">
-								Data Source
-							</Typography>
-						</Stack>
-						<List>
-							{DATA_SOURCES.map((dataSource) => {
-								const isConnected = platformNames.includes(
-									dataSource.title.toLowerCase(),
-								);
-
-								return (
-									<ListItem
-										key={dataSource.title}
-										sx={{
-											boxShadow: 1,
-											mt: 1,
-											borderRadius: 2,
-										}}
-									>
-										<ListItemIcon
-											sx={{
-												minWidth: 40,
-											}}
-										>
-											<TcCommunityPlatformIcon
-												platform={dataSource.title}
-												size={19}
-											/>
-										</ListItemIcon>
-										<ListItemText
-											sx={{
-												flex: "1 1 auto",
-												gap: 1,
-												alignItems: "center",
-											}}
-										>
-											{dataSource.title === "Google"
-												? "GDrive"
-												: dataSource.title}
-											{dataSource.isComingSoon && (
-												<Chip
-													label="Soon"
-													size="small"
-													sx={{
-														ml: 1,
-													}}
-												/>
-											)}
-										</ListItemText>
-										<Stack
-											sx={{
-												padding: 0,
-												display: "flex",
-												justifyContent: "end",
-											}}
-										>
-											{dataSource.isComingSoon ? (
-												<Button
-													variant="outlined"
-													sx={{
-														minWidth: {
-															xs: "auto",
-															md: 120,
-														},
-													}}
-													startIcon={<FaCaretUp />}
-													onClick={handleUpvote(dataSource.title)}
-												>
-													Upvote
-												</Button>
-											) : (
-												<Button
-													variant={isConnected ? "outlined" : "contained"}
-													sx={{
-														minWidth: {
-															xs: "auto",
-															md: 120,
-														},
-													}}
-													disabled={!isAdmin}
-													disableElevation
-													onClick={
-														isConnected
-															? handleConnectPlatform(dataSource)
-															: handleManagePlatform(dataSource)
-													}
-												>
-													{isConnected ? "Manage" : "Add"}
-												</Button>
-											)}
-										</Stack>
-									</ListItem>
-								);
-							})}
-						</List>
+						<DatasourceList datasources={DATA_SOURCES} />
 					</Grid>
 
 					<Grid item xs={12} md={6}>
@@ -485,7 +348,7 @@ function Welcome() {
 					</Grid>
 				</Grid>
 			</Grid>
-		</>
+		</div>
 	);
 }
 
