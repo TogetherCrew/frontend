@@ -5,10 +5,10 @@ import Loading from "@/components/global/Loading";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { setAmplitudeUserIdFromToken, trackAmplitudeEvent } from "@/helpers/amplitudeHelper";
 
-import BaseButton from "./BaseButton";
 import { Spinner } from "./Spinner";
+import BaseButton from "../BaseButton";
 
-export function UpvoteButton({ community, datasource }: { community: any, datasource: any }) {
+export function UpvoteButton({ community, name }: { community: any, name: string }) {
   const [loading, setLoading] = useState(false);
   const { showMessage } = useSnackbar();
 
@@ -22,12 +22,12 @@ export function UpvoteButton({ community, datasource }: { community: any, dataso
         eventProperties: {
           communityId: community?.id,
           communityName: community?.name,
-          platform: datasource,
+          upvote: name,
         },
         callback: () => {
           showMessage(
-            `Thank you for upvoting ${datasource}! We will consider adding it soon.`,
-            "success",
+            'Thank you for voting!',
+            'success',
           );
           setLoading(false);
         }
