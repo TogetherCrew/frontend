@@ -94,12 +94,12 @@ function TcSelectCommunity() {
 			</div>
 
 			<div className="flex flex-col gap-4">
-				<div className="flex justify-between gap-4">
+				<div className="flex justify-between gap-2">
 					<SearchWrapper debouncedFetchCommunities={debouncedFetchCommunities} />
 					<Button
 						variant="contained"
 						color="primary"
-						className="px-5 py-2 rounded-full flex gap-1 items-center hover:opacity-80 shadow-none"
+						className="px-5 py-2 rounded-full flex gap-1 items-center hover:opacity-80 shadow-none w-fit"
 						onClick={() => router.push("/centric/create-new-community")}>
 						<BsPlus className="text-lg" />
 						<span>Create</span>
