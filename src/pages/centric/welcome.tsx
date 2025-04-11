@@ -11,57 +11,45 @@ import { defaultLayout } from "@/layouts/defaultLayout";
 import { withRoles } from "@/utils/withRoles";
 import { useAdmin } from "@/hooks/useAdmin";
 
+function OnlyAdminWarning() {
+	const { isAdmin } = useAdmin();
+
+	if (!isAdmin) {
+		return (
+			<div
+				className="text-sm font-medium p-4 flex w-full justify-start rounded-2xl bg-yellow-50 text-yellow-500"
+			>
+				Only administrators can manage datasources and applications.
+			</div>
+		)
+	}
+
+	return null;
+}
+
 function Welcome() {
 
 	const { community } = useToken();
-	const { isAdmin } = useAdmin();
 
 	return (
-		<div className="h-screen bg-gray-100">
+		<div className="h-screen bg-gray-100 p-6 sm:p-8">
 			<SEO title="Home" />
-			<Grid
-				container
-				direction="row"
-				sx={{
-					mx: "auto",
-					px: {
-						xs: 2,
-						md: 12,
-					},
-					pb: 2,
-					gap: 1,
-				}}
-			>
-				<Grid item xs={12} pb={2}>
-					<h2 className="text-2xl font-semibold py-4">
-						Welcome to <b className="text-secondary">{community?.name}</b>
-					</h2>
-					{!isAdmin && (
-						<div
-							className="text-sm font-medium p-4 flex w-full justify-start rounded-full bg-yellow-50 text-yellow-500"
-						>
-							Only administrators can manage datasources and applications.
-						</div>
-					)}
-				</Grid>
-				<Grid container direction="row" spacing={2}>
-					<Grid
-						item
-						xs={12}
-						md={6}
-						pr={{
-							md: 2,
-						}}
-					>
+			<div className="flex flex-col gap-6 sm:gap-8">
+				<h1 className="text-2xl font-semibold">
+					Welcome to <b className="text-secondary">{community?.name}</b>
+				</h1>
+				<OnlyAdminWarning />
+				<div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
+					<div className="flex-1">
 						<DatasourceList />
-					</Grid>
-
-					<Grid item xs={12} md={6}>
+					</div>
+					<div className="flex-1">
 						<ApplicationList />
-					</Grid>
-				</Grid>
-			</Grid>
-		</div>
+					</div>
+				</div >
+			</div>
+
+		</div >
 	);
 }
 

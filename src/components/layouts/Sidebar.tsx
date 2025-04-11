@@ -141,7 +141,7 @@ const Sidebar = () => {
 	);
 
 	return (
-		<aside className="fixed hidden h-screen bg-gray-background shadow-inner md:block md:w-[120px] xl:w-[150px]">
+		<aside className="hidden h-screen bg-gray-background shadow-inner md:block md:w-[120px] xl:w-[150px]">
 			<nav>
 				<div>
 					<div className="mx-auto my-4 flex flex-col justify-center text-center">
