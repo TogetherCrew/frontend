@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import Loading from "@/components/global/Loading";
-
 import { useSnackbar } from "@/context/SnackbarContext";
 import { setAmplitudeUserIdFromToken, trackAmplitudeEvent } from "@/helpers/amplitudeHelper";
 
@@ -39,7 +37,7 @@ export function UpvoteButton({ community, name }: { community: any, name: string
   };
 
   return (
-    <BaseButton onClick={handleClick}>
+    <BaseButton onClick={handleClick} disabled={false}>
       <div className="flex items-center justify-center gap-2">
         {loading ? <Spinner /> : "Upvote"}
       </div>

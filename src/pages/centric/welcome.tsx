@@ -38,7 +38,7 @@ function Welcome() {
 				<h1 className="text-2xl font-semibold">
 					Welcome to <b className="text-secondary">{community?.name}</b>
 				</h1>
-				<OnlyAdminWarning />
+				{/* <OnlyAdminWarning /> */}
 				<div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
 					<div className="flex-1">
 						<DatasourceList />

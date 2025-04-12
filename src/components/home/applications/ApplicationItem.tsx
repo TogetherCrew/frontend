@@ -1,11 +1,13 @@
 
+import { FaCog } from "react-icons/fa";
+
+import { useAdmin } from "@/hooks/useAdmin";
+
+import { axiosInstance } from "@/axiosInstance";
 import { useToken } from "@/context/TokenContext";
 
-import { UpvoteButton } from "../datasources/UpvoteButton";
 import { Toggle } from "./Toggle";
-import { FaCog } from "react-icons/fa";
-import { axiosInstance } from "@/axiosInstance";
-import { useAdmin } from "@/hooks/useAdmin";
+import { UpvoteButton } from "../datasources/UpvoteButton";
 
 export default function ApplicationItem({ application }: { application: any }) {
 
@@ -62,6 +64,6 @@ export default function ApplicationItem({ application }: { application: any }) {
           // )
         )}
       </div>
-    </li>
+    </li >
   );
 }
