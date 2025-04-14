@@ -1,10 +1,13 @@
-import clsx from "clsx";
-import { IDiscordModifiedCommunity } from "../../../utils/interfaces";
-import TcAvatar from "@/components/shared/TcAvatar";
-import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { conf } from "@/configs";
-import { MdGroups } from "react-icons/md";
 import { useState } from "react";
+import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import clsx from "clsx";
+import { MdGroups } from "react-icons/md";
+
+import TcAvatar from "@/components/shared/TcAvatar";
+
+import { conf } from "@/configs";
+
+import { IDiscordModifiedCommunity } from "../../../utils/interfaces";
 
 interface ITcCommunityItemProps {
   community: IDiscordModifiedCommunity;

@@ -76,7 +76,7 @@ axiosInstance.interceptors.response.use(
           !error.config.url?.endsWith('/auth/refresh-tokens') &&
           user
         ) {
-          const { accessToken, refreshToken } = user;
+          const { refreshToken } = user;
 
           if (refreshToken && !isRefreshing) {
             isRefreshing = true;

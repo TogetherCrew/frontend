@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+
+import { useToken } from '@/context/TokenContext';
+
+import TcCommunityItem from './TcCommunityItem';
 import TcText from '../../shared/TcText';
 import { StorageService } from '../../../services/StorageService';
 import { IDiscordModifiedCommunity } from '../../../utils/interfaces';
-import TcCommunityItem from './TcCommunityItem';
-import { useToken } from '@/context/TokenContext';
 
 /**
  * Props for the TcCommunityListItems component.
