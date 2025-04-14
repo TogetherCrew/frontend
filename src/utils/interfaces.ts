@@ -238,4 +238,22 @@ export interface IModuleProps {
   options: {
     platforms: IPlatformModuleProps[];
   };
+  activated: boolean;
+}
+
+export interface IModuleContext {
+  icon: React.ElementType;
+  name: string;
+  title: string;
+  description: string;
+  available: boolean;
+  configPath: string;
+  modulePath: string;
+}
+
+export interface IPlatformContext {
+  name: string;
+  title: string;
+  available: boolean;
+  configPath: string;
 }

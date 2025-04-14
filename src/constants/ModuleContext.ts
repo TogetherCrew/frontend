@@ -1,22 +1,9 @@
 import { IoCalendar, IoShieldCheckmark, IoTrophy } from "react-icons/io5";
-import { RiRobot2Fill, RiMentalHealthFill, RiTeamFill } from "react-icons/ri";
+import { RiMentalHealthFill, RiRobot2Fill, RiTeamFill } from "react-icons/ri";
 
-import { useToken } from "@/context/TokenContext";
+import { IModuleContext } from "@/utils/interfaces";
 
-import { useApi } from "./useApi";
-
-interface IApplication {
-  icon: React.ElementType;
-  id?: string;
-  name: string;
-  title: string;
-  description: string;
-  available: boolean;
-  activated?: boolean;
-  path: string;
-}
-
-const APPLICATIONS: IApplication[] = [
+export const MODULE_CONTEXT: IModuleContext[] = [
   {
     icon: RiTeamFill,
     name: "community-insights",
@@ -24,7 +11,8 @@ const APPLICATIONS: IApplication[] = [
     description:
       "Master your community's engagement with detailed insights. Monitor active vs. inactive members, identify new joiners and those disengaging, track participation across user groups, and identify your most valuable contributors.",
     available: true,
-    path: "/community-settings/",
+    configPath: '/community-settings/community-insights',
+    modulePath: "/",
   },
   {
     icon: RiMentalHealthFill,
@@ -33,7 +21,8 @@ const APPLICATIONS: IApplication[] = [
     description:
       "Monitor your community's health",
     available: true,
-    path: "/community-settings/",
+    configPath: '/community-settings/community-health',
+    modulePath: '/community-health/'
   },
   {
     icon: IoCalendar,
@@ -42,7 +31,8 @@ const APPLICATIONS: IApplication[] = [
     description:
       "Take control of your announcements and communication with members. Send targeted messages to specific types of member based on their roles or engagement levels. Schedule announcements in advance and even reach disengaged members with (safe) DMs.",
     available: true,
-    path: "/announcements",
+    configPath: '/community-settings/announcements',
+    modulePath: '/announcements/'
   },
   {
     icon: RiRobot2Fill,
@@ -51,7 +41,8 @@ const APPLICATIONS: IApplication[] = [
     description:
       "24/7 Q&A support for your community. Our AI assistant uses your connected data sources to answer member questions instantly, freeing you to focus on strategic tasks while ensuring consistent, reliable member support.",
     available: true,
-    path: "/community-settings/ai-assistant/",
+    configPath: '/community-settings/ai-assistant',
+    modulePath: '/agent'
   },
   {
     icon: IoTrophy,
@@ -60,7 +51,8 @@ const APPLICATIONS: IApplication[] = [
     description:
       "Create a culture of genuine participation with our intelligent Reputation Score system. Automatically measure authentic community involvement, while ensuring the system remains fair and resistant to manipulation.",
     available: true,
-    path: "/community-settings/reputation-score/",
+    configPath: '/community-settings/reputation-score',
+    modulePath: '/reputation-score/'
   },
   {
     icon: IoShieldCheckmark,
@@ -69,22 +61,7 @@ const APPLICATIONS: IApplication[] = [
     description:
       "Keep your community safe with automatic detection of violent language and community guidelines violations. Our AI ensures credible neutrality, keeping your moderators safe and your standards objective.",
     available: true,
-    path: "/community-settings/violation-detection/",
+    configPath: '/community-settings/violation-detection',
+    modulePath: '/violation-detection/'
   },
 ];
-
-export const useApplications = () => {
-  const { community } = useToken();
-
-  const { data, loading, error } = useApi(
-    community?.id ? `/modules?community=${community.id}` : null
-  );
-
-  const applications = APPLICATIONS.map((application) => ({
-    ...application,
-    activated: data?.results?.some((module: any) => module.name === application.name && module.activated),
-    id: data?.results?.find((module: any) => module.name === application.name)?.id,
-  }));
-
-  return { applications, data, loading, error };
-};

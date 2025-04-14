@@ -1,15 +1,14 @@
 import React from "react";
-import { Grid } from "@mui/material";
 
+import { useAdmin } from "@/hooks/useAdmin";
 
 import SEO from "@/components/global/SEO";
-import ApplicationList from "@/components/home/applications/ApplicationList";
-import DatasourceList from "@/components/home/datasources/DatasourceList";
+import ModuleList from "@/components/home/modules/ModuleList";
+import DatasourceList from "@/components/home/platforms/PlatformList";
 
 import { useToken } from "@/context/TokenContext";
 import { defaultLayout } from "@/layouts/defaultLayout";
 import { withRoles } from "@/utils/withRoles";
-import { useAdmin } from "@/hooks/useAdmin";
 
 function OnlyAdminWarning() {
 	const { isAdmin } = useAdmin();
@@ -44,7 +43,7 @@ function Welcome() {
 						<DatasourceList />
 					</div>
 					<div className="flex-1">
-						<ApplicationList />
+						<ModuleList />
 					</div>
 				</div >
 			</div>

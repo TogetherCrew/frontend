@@ -1,10 +1,8 @@
 import { useState } from "react";
+import { FaCaretUp } from "react-icons/fa6";
 
 import { useSnackbar } from "@/context/SnackbarContext";
 import { setAmplitudeUserIdFromToken, trackAmplitudeEvent } from "@/helpers/amplitudeHelper";
-
-import { Spinner } from "./Spinner";
-import BaseButton from "../BaseButton";
 
 export function UpvoteButton({ community, name }: { community: any, name: string }) {
   const [loading, setLoading] = useState(false);
@@ -37,10 +35,10 @@ export function UpvoteButton({ community, name }: { community: any, name: string
   };
 
   return (
-    <BaseButton onClick={handleClick} disabled={false}>
-      <div className="flex items-center justify-center gap-2">
-        {loading ? <Spinner /> : "Upvote"}
-      </div>
-    </BaseButton>
+    <div className="tooltip tooltip-left" data-tip="Upvote">
+      <button onClick={handleClick} disabled={loading} className="btn btn-sm btn-square">
+        {loading ? <span className="loading loading-spinner loading-sm"></span> : <FaCaretUp />}
+      </button>
+    </div>
   );
 }
