@@ -6,7 +6,7 @@ import { IModuleContext } from "@/utils/interfaces";
 export const MODULE_CONTEXT: IModuleContext[] = [
   {
     icon: RiTeamFill,
-    name: "community-insights",
+    name: "communityInsights",
     title: "Community Insights",
     description:
       "Master your community's engagement with detailed insights. Monitor active vs. inactive members, identify new joiners and those disengaging, track participation across user groups, and identify your most valuable contributors.",
@@ -16,7 +16,7 @@ export const MODULE_CONTEXT: IModuleContext[] = [
   },
   {
     icon: RiMentalHealthFill,
-    name: "community-health",
+    name: "communityHealth",
     title: "Community Health",
     description:
       "Monitor your community's health",
