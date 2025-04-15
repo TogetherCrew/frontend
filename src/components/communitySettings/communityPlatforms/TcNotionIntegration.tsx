@@ -38,13 +38,13 @@ function TcNotionIntegration({
 
   const { showMessage } = useSnackbar();
 
-  const addPlatform = searchParams.get("addPlatform");
 
   useEffect(() => {
+    const addPlatform = searchParams?.get("addPlatform");
     if (addPlatform === "notion" && userId) {
       connectNewPlatform("notion", userId);
     }
-  }, [addPlatform, userId]);
+  }, [searchParams, userId]);
 
 
   useEffect(() => {
