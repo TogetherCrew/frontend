@@ -39,6 +39,7 @@ import { theme } from '../utils/theme';
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: ComponentWithPageLayout) {
+
   usePageViewTracking();
 
   useEffect(() => {

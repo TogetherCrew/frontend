@@ -249,6 +249,7 @@ export interface IModuleContext {
   available: boolean;
   configPath: string;
   modulePath: string;
+  adminOnly?: boolean;
 }
 
 export interface IPlatformContext {
@@ -256,4 +257,11 @@ export interface IPlatformContext {
   title: string;
   available: boolean;
   configPath: string;
+}
+
+export interface ISidebarItem {
+  label: string;
+  icon: React.ElementType;
+  href: string;
+  children?: ISidebarItem[];
 }

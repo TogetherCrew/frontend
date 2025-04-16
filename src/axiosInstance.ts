@@ -57,8 +57,8 @@ axiosInstance.interceptors.response.use(
           error.response?.status === 401 &&
           error.config.url?.endsWith('/auth/refresh-tokens')
         ) {
-          StorageService.removeLocalStorage('user');
           StorageService.removeLocalStorage('community');
+          StorageService.removeLocalStorage('user');
           toast.error('Session expired. Please log in again.', {
             position: 'bottom-left',
             autoClose: 5000,
@@ -124,18 +124,23 @@ axiosInstance.interceptors.response.use(
           }
         } else {
           // Handle no user case
-          StorageService.removeLocalStorage('user');
+          StorageService.removeLocalStorage('community');
+          StorageService.removeLocalStorage('TC_SELECTED_PLATFORM');
           StorageService.removeLocalStorage('analysis_state');
-          toast.error('Token expired...', {
-            position: 'bottom-left',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: 0,
-          });
-          window.location.href = '/';
+          StorageService.removeLocalStorage('user');
+          if (window.location.pathname !== '/centric/') {
+            console.log(window.location.pathname);
+            toast.error('Token expired...', {
+              position: 'bottom-left',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: 0,
+            });
+            window.location.href = '/centric';
+          }
         }
         break;
       case 404:

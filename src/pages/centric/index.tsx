@@ -9,11 +9,16 @@ import TcText from "../../components/shared/TcText";
 import centricLayout from "../../layouts/centricLayout";
 import useAppStore from "../../store/useStore";
 
+import Image from 'next/image';
+
+import tcLogo from '../../assets/svg/tc-logo.svg';
+
 function Index() {
 	const { discordAuthorization } = useAppStore();
-	
+
 	return (
-		<div>
+		<div className='flex flex-col gap-8 p-8'>
+			<Image src={tcLogo} alt='' className='mx-auto' />
 			<TcBoxContainer
 				bgcolor="white"
 				className="rounded py-12 px-4 md:min-h-[37.5rem] md:p-12"

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import TcPrompt from '../components/layouts/shared/TcPrompt';
-import Sidebar from '../components/layouts/Sidebar';
-import SidebarXs from '../components/layouts/xs/SidebarXs';
+import DashboardLayout from '@/components/layouts/DashboardLayout';
 
 type IDefaultLayoutProps = {
   children: React.ReactNode;
@@ -10,15 +9,11 @@ type IDefaultLayoutProps = {
 
 export const defaultLayout = ({ children }: IDefaultLayoutProps) => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <TcPrompt />
-      <div className='flex w-full flex-col justify-between md:flex-row'>
-        <Sidebar />
-        <SidebarXs />
-        <main className='flex-1'>
-          {children}
-        </main>
-      </div>
-    </>
+      <DashboardLayout>
+        {children}
+      </DashboardLayout>
+    </div>
   );
 };

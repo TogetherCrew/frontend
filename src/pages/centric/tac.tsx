@@ -12,6 +12,11 @@ import centricLayout from '../../layouts/centricLayout';
 import { StorageService } from '../../services/StorageService';
 import useAppStore from '../../store/useStore';
 
+import Image from 'next/image';
+
+import tcLogo from '../../assets/svg/tc-logo.svg';
+import LoadingScreen from '@/components/LoadingScreen';
+
 function Tac() {
   const { patchUser } = useAppStore();
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,11 +46,12 @@ function Tac() {
   };
 
   if (loading) {
-    return <SimpleBackdrop />;
+    return <LoadingScreen />;
   }
 
   return (
-    <div>
+    <div className='flex flex-col gap-8 p-8'>
+      <Image src={tcLogo} alt='' className='mx-auto' />
       <TcBoxContainer
         bgcolor='white'
         className='rounded py-12 px-4 md:min-h-[37.5rem] md:p-12'

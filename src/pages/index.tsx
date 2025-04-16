@@ -17,6 +17,7 @@ import { withRoles } from '../utils/withRoles';
 export const availablePlatforms = ['discord', 'discourse', 'telegram'];
 
 function Index(): JSX.Element {
+
   const { community } = useToken();
 
   const hasActivePlatform = community?.platforms?.some(

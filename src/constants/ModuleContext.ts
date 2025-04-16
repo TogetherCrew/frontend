@@ -1,7 +1,8 @@
-import { IoCalendar, IoShieldCheckmark, IoTrophy } from "react-icons/io5";
+import { IoCalendar, IoTrophy } from "react-icons/io5";
 import { RiMentalHealthFill, RiRobot2Fill, RiTeamFill } from "react-icons/ri";
 
 import { IModuleContext } from "@/utils/interfaces";
+import { FaShieldAlt } from "react-icons/fa";
 
 export const MODULE_CONTEXT: IModuleContext[] = [
   {
@@ -32,7 +33,8 @@ export const MODULE_CONTEXT: IModuleContext[] = [
       "Take control of your announcements and communication with members. Send targeted messages to specific types of member based on their roles or engagement levels. Schedule announcements in advance and even reach disengaged members with (safe) DMs.",
     available: true,
     configPath: '/community-settings/announcements',
-    modulePath: '/announcements/'
+    modulePath: '/announcements/',
+    adminOnly: true
   },
   {
     icon: RiRobot2Fill,
@@ -42,7 +44,7 @@ export const MODULE_CONTEXT: IModuleContext[] = [
       "24/7 Q&A support for your community. Our AI assistant uses your connected data sources to answer member questions instantly, freeing you to focus on strategic tasks while ensuring consistent, reliable member support.",
     available: true,
     configPath: '/community-settings/ai-assistant',
-    modulePath: '/agent'
+    modulePath: '/dashboard/agent'
   },
   {
     icon: IoTrophy,
@@ -52,16 +54,16 @@ export const MODULE_CONTEXT: IModuleContext[] = [
       "Create a culture of genuine participation with our intelligent Reputation Score system. Automatically measure authentic community involvement, while ensuring the system remains fair and resistant to manipulation.",
     available: true,
     configPath: '/community-settings/reputation-score',
-    modulePath: '/reputation-score/'
+    modulePath: '/reputation-score/',
   },
   {
-    icon: IoShieldCheckmark,
+    icon: FaShieldAlt,
     name: "violationDetection",
     title: "Community Guardian",
     description:
       "Keep your community safe with automatic detection of violent language and community guidelines violations. Our AI ensures credible neutrality, keeping your moderators safe and your standards objective.",
     available: true,
     configPath: '/community-settings/violation-detection',
-    modulePath: '/violation-detection/'
+    modulePath: '/dashboard/community-guardian/',
   },
 ];
