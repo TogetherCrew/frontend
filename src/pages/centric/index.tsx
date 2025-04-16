@@ -21,7 +21,7 @@ function Index() {
 				bgcolor="white"
 				className="rounded py-12 px-4 md:min-h-[37.5rem] md:p-12"
 				contentContainerChildren={
-					<div className="space-y-8 py-12">
+					<div className="flex flex-col items-center space-y-8 py-12">
 						<TcText
 							sx={{ typography: { xs: "h5", md: "h4" } }}
 							color="initial"
