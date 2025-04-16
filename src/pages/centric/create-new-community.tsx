@@ -16,6 +16,7 @@ import useAppStore from '../../store/useStore';
 import Image from 'next/image';
 
 import tcLogo from '../../assets/svg/tc-logo.svg';
+import LoadingScreen from '@/components/LoadingScreen';
 
 function CreateNewCommunity() {
   const { createNewCommunitie } = useAppStore();
@@ -40,7 +41,7 @@ function CreateNewCommunity() {
   if (loading) {
     return (
       <>
-        <SimpleBackdrop />
+        <LoadingScreen />
       </>
     );
   }
@@ -118,7 +119,7 @@ function CreateNewCommunity() {
       <div className='flex justify-start'>
         <button className='btn btn-ghost' onClick={() => router.back()}>Back</button>
       </div>
-    </>
+    </div>
   );
 }
 
