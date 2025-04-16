@@ -1,6 +1,8 @@
-import { useAuth } from "@/context/AuthProvider";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/context/AuthProvider";
+
 import LoadingScreen from "../LoadingScreen";
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {

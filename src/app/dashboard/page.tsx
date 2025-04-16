@@ -1,9 +1,10 @@
 'use client';
 
+import { FaHome } from "react-icons/fa";
+
 import SEO from "@/components/global/SEO";
 import ModuleList from "@/components/home/modules/ModuleList";
 import PlatformList from "@/components/home/platforms/PlatformList";
-import { FaHome } from "react-icons/fa";
 
 export default function Page() {
 

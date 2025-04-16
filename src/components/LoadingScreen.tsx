@@ -1,5 +1,7 @@
-import tcLogo from '../assets/svg/tc-logo.svg';
 import Image from 'next/image';
+
+import tcLogo from '../assets/svg/tc-logo.svg';
+
 export default function LoadingScreen() {
   return (
     <div className="flex flex-col gap-4 h-screen w-screen items-center justify-center">

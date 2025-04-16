@@ -1,7 +1,8 @@
 import React from 'react';
 
-import TcPrompt from '../components/layouts/shared/TcPrompt';
 import DashboardLayout from '@/components/layouts/DashboardLayout';
+
+import TcPrompt from '../components/layouts/shared/TcPrompt';
 
 type IDefaultLayoutProps = {
   children: React.ReactNode;

@@ -1,8 +1,8 @@
+import { FaShieldAlt } from "react-icons/fa";
 import { IoCalendar, IoTrophy } from "react-icons/io5";
 import { RiMentalHealthFill, RiRobot2Fill, RiTeamFill } from "react-icons/ri";
 
 import { IModuleContext } from "@/utils/interfaces";
-import { FaShieldAlt } from "react-icons/fa";
 
 export const MODULE_CONTEXT: IModuleContext[] = [
   {

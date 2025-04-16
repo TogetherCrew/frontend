@@ -1,17 +1,15 @@
 import React from "react";
 import { LoginButton } from "@telegram-auth/react";
+import Image from 'next/image';
 
 import { conf } from "@/configs";
 
+import tcLogo from '../../assets/svg/tc-logo.svg';
 import TcBoxContainer from "../../components/shared/TcBox/TcBoxContainer";
 import TcButton from "../../components/shared/TcButton";
 import TcText from "../../components/shared/TcText";
 import centricLayout from "../../layouts/centricLayout";
 import useAppStore from "../../store/useStore";
-
-import Image from 'next/image';
-
-import tcLogo from '../../assets/svg/tc-logo.svg';
 
 function Index() {
 	const { discordAuthorization } = useAppStore();

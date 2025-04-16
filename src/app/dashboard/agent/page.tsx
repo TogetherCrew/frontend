@@ -1,7 +1,9 @@
 'use client';
+
+import { FaRobot } from "react-icons/fa6";
+
 import { Chat } from "@/components/chat/Chat";
 import SEO from "@/components/global/SEO";
-import { FaRobot } from "react-icons/fa6";
 
 export default function AgentPage() {
   return (

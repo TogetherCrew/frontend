@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { FormControlLabel } from '@mui/material';
+import Image from 'next/image';
 import router from 'next/router';
 
-import SimpleBackdrop from '../../components/global/LoadingBackdrop';
+import LoadingScreen from '@/components/LoadingScreen';
+
+import tcLogo from '../../assets/svg/tc-logo.svg';
 import TcBoxContainer from '../../components/shared/TcBox/TcBoxContainer';
 import TcButton from '../../components/shared/TcButton';
 import TcCheckbox from '../../components/shared/TcCheckbox';
@@ -12,11 +15,6 @@ import TcText from '../../components/shared/TcText';
 import { useToken } from '../../context/TokenContext';
 import centricLayout from '../../layouts/centricLayout';
 import useAppStore from '../../store/useStore';
-
-import Image from 'next/image';
-
-import tcLogo from '../../assets/svg/tc-logo.svg';
-import LoadingScreen from '@/components/LoadingScreen';
 
 function CreateNewCommunity() {
   const { createNewCommunitie } = useAppStore();

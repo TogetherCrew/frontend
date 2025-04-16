@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-
-import TcSelectCommunity from '../../components/centric/selectCommunity/TcSelectCommunity';
-// import TcBoxContainer from '../../components/shared/TcBox/TcBoxContainer';
-import centricLayout from '../../layouts/centricLayout';
 import Image from 'next/image';
 
-import tcLogo from '../../assets/svg/tc-logo.svg';
 import LoadingScreen from '@/components/LoadingScreen';
+
+import tcLogo from '../../assets/svg/tc-logo.svg';
+import TcSelectCommunity from '../../components/centric/selectCommunity/TcSelectCommunity';
+import centricLayout from '../../layouts/centricLayout';
 
 function SelectCommunity() {
   const [communityLoading, setCommunityLoading] = useState<boolean>(false);

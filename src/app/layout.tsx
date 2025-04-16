@@ -2,7 +2,6 @@ import { Inter, Roboto_Mono } from 'next/font/google'
 
 import "@/styles/globals.css";
 
-import Sidebar from '@/components/layouts/Sidebar';
 import { AuthProvider } from '@/context/AuthProvider';
 
 const inter = Inter({

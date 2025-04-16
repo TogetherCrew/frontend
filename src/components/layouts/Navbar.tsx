@@ -1,10 +1,11 @@
 "use client";
 
-import { useToken } from "@/context/TokenContext";
-import { StorageService } from "@/services/StorageService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaBars, FaExchangeAlt, FaSignOutAlt } from "react-icons/fa";
+
+import { useToken } from "@/context/TokenContext";
+import { StorageService } from "@/services/StorageService";
 // import ThemeToggle from "../ui/toggle/ThemeToggle";
 // import { ProfileDropdown } from "../ui/dropdown/ProfileDropdown";
 interface NavbarProps {

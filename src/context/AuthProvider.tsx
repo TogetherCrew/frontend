@@ -1,14 +1,16 @@
 "use client";
 
-import { authState } from "@/atoms/authState.atom";
-import LoadingScreen from "@/components/LoadingScreen";
-import { conf } from "@/configs";
-import { JwtPayloadType } from "@/utils/JwtPayloadType";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useAtom } from "jotai/react";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+
+import LoadingScreen from "@/components/LoadingScreen";
+
+import { authState } from "@/atoms/authState.atom";
+import { conf } from "@/configs";
+import { JwtPayloadType } from "@/utils/JwtPayloadType";
 
 interface AuthContextType {
   isAuthenticated: boolean;

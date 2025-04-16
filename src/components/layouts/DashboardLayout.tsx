@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-// import ProtectedRoute from "../auth/ProtectedRoute";
+import { useAtom } from "jotai/react";
+
+import { uiAtom } from "@/atoms/ui.atom";
+
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import { useAtom, useAtomValue } from "jotai/react";
-import { uiAtom } from "@/atoms/ui.atom";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [ui, setUi] = useAtom(uiAtom);
@@ -16,7 +16,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <>
-      {/* <ProtectedRoute> */}
       <Sidebar isSidebarOpen={ui.isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div className={`flex-1 flex flex-col transition-all duration-300 overflow-y-hidden ${ui.isSidebarOpen ? 'lg:ml-16' : ''}`}>
         <Navbar isSidebarOpen={ui.isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
@@ -24,7 +23,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
         </div>
       </div>
-      {/* </ProtectedRoute> */}
     </>
   );
 }

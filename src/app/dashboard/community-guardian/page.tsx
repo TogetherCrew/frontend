@@ -1,9 +1,10 @@
 'use client'
 
-import { MODULE_CONTEXT } from "@/constants/ModuleContext"
 import { useRouter } from "next/navigation"
-import { FaXTwitter } from "react-icons/fa6"
 import { FaDiscord, FaTelegram } from "react-icons/fa"
+import { FaXTwitter } from "react-icons/fa6"
+
+import { MODULE_CONTEXT } from "@/constants/ModuleContext"
 
 export default function CommunityGuardianPage() {
   const router = useRouter()
@@ -35,19 +36,19 @@ export default function CommunityGuardianPage() {
 
         <ul className="flex flex-col gap-2 text-sm">
           <li className="w-fit">
-            <a href="https://discord.gg/QNJGeZeT" target="_blank" className="text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-2">
+            <a href="https://discord.gg/QNJGeZeT" target="_blank" className="text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-2" rel="noreferrer">
               <FaDiscord />
               <span>Discord</span>
             </a>
           </li>
           <li className="w-fit">
-            <a href="https://x.com/together_crew" target="_blank" className="text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-2">
+            <a href="https://x.com/together_crew" target="_blank" className="text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-2" rel="noreferrer">
               <FaXTwitter />
               <span>Twitter</span>
             </a>
           </li>
           <li className="w-fit">
-            <a href="https://t.me/k_bc0" target="_blank" className="text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-2">
+            <a href="https://t.me/k_bc0" target="_blank" className="text-blue-500 hover:text-blue-600 hover:underline flex items-center gap-2" rel="noreferrer">
               <FaTelegram />
               <span>Telegram</span>
             </a>
