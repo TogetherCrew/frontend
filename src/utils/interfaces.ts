@@ -265,3 +265,9 @@ export interface ISidebarItem {
   href: string;
   children?: ISidebarItem[];
 }
+
+export interface IMediaWikiNamepace {
+  id: number
+  name: string
+  count: number
+}

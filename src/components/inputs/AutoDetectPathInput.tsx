@@ -1,0 +1,81 @@
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
+
+interface AutoDetectPathInputProps {
+  name: string;
+  baseUrl?: string;
+  guessPaths: string[];
+  detectTest: (fullUrl: string) => Promise<boolean>;
+  label?: string;
+  helperText?: string;
+}
+
+export function AutoDetectPathInput({
+  name,
+  baseUrl,
+  guessPaths,
+  detectTest,
+  label = "API Path",
+  helperText,
+}: AutoDetectPathInputProps) {
+  const { register, setValue, watch } = useFormContext();
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "fail">("idle");
+  const [attempted, setAttempted] = useState(false);
+
+  const currentValue = watch(name);
+
+  useEffect(() => {
+    if (!baseUrl) return;
+
+    let found = false;
+    const tryDetect = async () => {
+      setStatus("loading");
+      for (const path of guessPaths) {
+        const fullUrl = new URL(path, baseUrl).toString();
+        console.log("Trying", fullUrl);
+        const isValid = await detectTest(fullUrl);
+        console.log("isValid", isValid);
+        if (isValid) {
+          setValue(name, path, { shouldValidate: true });
+          found = true;
+          setStatus("success");
+          break;
+        }
+      }
+      if (!found) {
+        setStatus("fail");
+      }
+      setAttempted(true);
+    };
+
+    tryDetect();
+  }, [baseUrl, guessPaths.join(","), detectTest, setValue, name]);
+
+  return (
+    <div className="form-control w-full">
+      <label className="label">
+        <span className="label-text">{label}</span>
+        {status === "loading" && <span className="loading loading-spinner loading-xs ml-2" />}
+        {status === "success" && <span className="text-success text-xs ml-2">Detected</span>}
+        {status === "fail" && <span className="text-error text-xs ml-2">Failed</span>}
+      </label>
+      <input
+        type="text"
+        placeholder="/w/api.php"
+        className="input input-bordered w-full"
+        {...register(name, { required: true })}
+        defaultValue={currentValue}
+      />
+      {helperText && (
+        <label className="label">
+          <span className="label-text-alt">{helperText}</span>
+        </label>
+      )}
+      {status === "fail" && attempted && (
+        <label className="label">
+          <span className="label-text-alt text-warning">Couldn't auto-detect. Please enter manually.</span>
+        </label>
+      )}
+    </div>
+  );
+}

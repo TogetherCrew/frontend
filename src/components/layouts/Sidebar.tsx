@@ -45,10 +45,6 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: { isSidebarOpen: boolean, 
 
 	const { sidebarItems } = useSidebar();
 
-	useEffect(() => {
-		console.log(sidebarItems)
-	}, [sidebarItems]);
-
 	return (
 		<>
 			{/* Backdrop */}
