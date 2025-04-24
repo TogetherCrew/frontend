@@ -238,4 +238,30 @@ export interface IModuleProps {
   options: {
     platforms: IPlatformModuleProps[];
   };
+  activated: boolean;
+}
+
+export interface IModuleContext {
+  icon: React.ElementType;
+  name: string;
+  title: string;
+  description: string;
+  available: boolean;
+  configPath: string;
+  modulePath: string;
+  adminOnly?: boolean;
+}
+
+export interface IPlatformContext {
+  name: string;
+  title: string;
+  available: boolean;
+  configPath: string;
+}
+
+export interface ISidebarItem {
+  label: string;
+  icon: React.ElementType;
+  href: string;
+  children?: ISidebarItem[];
 }

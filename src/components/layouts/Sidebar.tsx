@@ -1,169 +1,79 @@
-import React, { useEffect, useState } from "react";
-import { faHeartPulse, faHome, faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar } from "@mui/material";
+"use client";
+import { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { FaRobot } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
-import { MdOutlineAnnouncement } from "react-icons/md";
-import { RiNftFill } from "react-icons/ri";
 
-import { ICommunityPlatfromProps } from "@/utils/interfaces";
+import { useSidebar } from "@/hooks/sidebar/useSidebar";
 
-import TcText from "../shared/TcText";
-import { conf } from "../../configs/index";
-import { useToken } from "../../context/TokenContext";
-import useAppStore from "../../store/useStore";
+import { ISidebarItem } from "@/utils/interfaces";
 
-interface MenuItem {
-	name: string;
-	path: string;
-	icon: React.ReactNode;
-	isVisible?: boolean;
+function SidebarLabel({ item }: { item: ISidebarItem }) {
+	return (
+		<>
+			<item.icon className="w-4 h-4 lg:w-5 lg:h-5" />
+			<span className="text-xs font-semibold lg:hidden">{item.label}</span>
+		</>
+	)
 }
 
-const Sidebar = () => {
-	const router = useRouter();
-	const currentRoute = router.pathname;
-	const { community, selectedPlatform } = useToken();
-	const [isDiscourse, setIsDiscourse] = useState(false);
-	const userPermissions = useAppStore((state) => state.userRolePermissions || []);
-	const [connectedPlatform, setConnectedPlatform] = useState<ICommunityPlatfromProps | null>(null);
+function SidebarItem({ item }: { item: ISidebarItem }) {
 
-	const findConnectedPlatform = () => {
-		if (!community?.platforms) return;
-
-		const foundPlatform = community.platforms.find(
-			(platform) => platform.disconnectedAt === null && platform.name === "discord"
-		);
-		setConnectedPlatform(foundPlatform ?? null);
-	};
-
-	const checkIsDiscourse = () => {
-		const discoursePlatformId = community?.platforms?.find(
-			(platform) => platform.name === "discourse" && platform.disconnectedAt === null
-		)?.id;
-
-		setIsDiscourse(Boolean(discoursePlatformId && selectedPlatform && selectedPlatform === discoursePlatformId));
-	};
-
-	useEffect(() => {
-		findConnectedPlatform();
-	}, [community]);
-
-	useEffect(() => {
-		checkIsDiscourse();
-	}, [community, selectedPlatform]);
-
-	const defaultMenuItems: MenuItem[] = [
-		{
-			name: "Home",
-			path: "/centric/welcome",
-			icon: <FontAwesomeIcon icon={faHome} style={{ fontSize: 20, color: "black" }} />
-		},
-		{
-			name: "Community Insights",
-			path: "/",
-			icon: <FontAwesomeIcon icon={faUserGroup} style={{ fontSize: 20, color: "black" }} />
-		},
-		{
-			name: "Community Health",
-			path: "/community-health",
-			icon: <FontAwesomeIcon icon={faHeartPulse} style={{ fontSize: 20, color: "black" }} />
-		},
-		{
-			name: "Smart Announcements",
-			path: "/announcements",
-			icon: <MdOutlineAnnouncement style={{ fontSize: 20, color: "black", margin: "0 auto" }} />
-		},
-		{
-			name: "Agent",
-			path: "/agent",
-			icon: <FaRobot style={{ fontSize: 20, color: "black", margin: "0 auto" }} />
-		},
-		{
-			name: "Reputation Score",
-			path: "/reputation-score",
-			icon: <RiNftFill style={{ fontSize: 20, color: "black", margin: "0 auto" }} />
-		},
-		{
-			name: "Community Settings",
-			path: "/community-settings",
-			icon: <FiSettings style={{ fontSize: 20, color: "black", margin: "0 auto" }} />
-		}
-	];
-
-	const getFilteredMenuItems = () => {
-		let items = [...defaultMenuItems];
-
-		if (!userPermissions.includes("admin")) {
-			items = items.filter(
-				(item) => item.name !== "Community Settings" && item.name !== "Smart Announcements"
-			);
-		}
-
-		if (isDiscourse) {
-			items = items.filter((item) => item.name !== "Smart Announcements");
-		}
-
-		return items;
-	};
-
-	const renderMenuItem = (item: MenuItem) => (
-		<li key={item.name}>
-			<Link href={item.path}>
-				<div
-					className={`cursor-pointer rounded-xl py-4 px-2 text-center delay-75 ease-in hover:bg-white
-						${currentRoute === item.path ? "bg-white" : ""}`}
-				>
-					{item.icon}
-					<p className="break-words text-center text-sm">{item.name}</p>
-				</div>
-			</Link>
+	if (item.children && item.children.length > 0) {
+		return (
+			<li>
+				<details open>
+					<summary className="py-3"><SidebarLabel item={item} /></summary>
+					<ul>
+						{item.children.map((child) => (
+							<SidebarItem key={child.label} item={child} />
+						))}
+					</ul>
+				</details>
+			</li>
+		)
+	}
+	console.log(item.href, window.location.pathname)
+	return (
+		<li>
+			<Link href={item.href || ''} className={`py-3 lg:hidden ${item.href === window.location.pathname ? 'text-secondary' : ''}`}><SidebarLabel item={item} /></Link>
+			<Link href={item.href || ''} className={`hidden lg:flex tooltip tooltip-right btn btn-square btn-ghost ${item.href === window.location.pathname ? 'text-secondary bg-base-200' : ''}`} data-tip={item.label}><SidebarLabel item={item} /></Link>
 		</li>
-	);
+	)
+}
 
-	const renderCommunityAvatar = () => (
-		<div
-			className="mx-auto mb-2 h-10 w-10 cursor-pointer"
-			onClick={() => router.push("/centric/select-community")}
-		>
-			{connectedPlatform?.metadata?.icon ? (
-				<Avatar
-					src={`${conf.DISCORD_CDN}icons/${connectedPlatform.metadata.id}/${connectedPlatform.metadata.icon}`}
-					alt={connectedPlatform.metadata.name || ""}
-				/>
-			) : (
-				<div className="align-center flex h-10 w-10 flex-col justify-center rounded-full bg-secondary text-center text-xs" />
-			)}
-		</div>
-	);
+
+const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: { isSidebarOpen: boolean, setIsSidebarOpen: (isSidebarOpen: boolean) => void }) => {
+
+	const { sidebarItems } = useSidebar();
+
+	useEffect(() => {
+		console.log(sidebarItems)
+	}, [sidebarItems]);
 
 	return (
-		<aside className="fixed hidden h-screen bg-gray-background shadow-inner md:block md:w-[120px] xl:w-[150px]">
-			<nav>
-				<div>
-					<div className="mx-auto my-4 flex flex-col justify-center text-center">
-						<div className="mx-auto w-full">
-							{renderCommunityAvatar()}
-							<div className="break-words">
-								<TcText
-									text={community?.name}
-									variant="body1"
-									fontWeight="bold"
-								/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<hr className="mx-2" />
-				<ul className="flex flex-col px-3 gap-2">
-					{getFilteredMenuItems().map(renderMenuItem)}
+		<>
+			{/* Backdrop */}
+			{isSidebarOpen && (
+				<div
+					className="fixed inset-0 bg-black/50 lg:hidden z-30"
+					onClick={() => setIsSidebarOpen(false)}
+				></div>
+			)}
+
+			{/* Sidebar */}
+			<div
+				className={`fixed left-0 top-0 h-full w-64 lg:w-16 bg-base-100 border-r border-base-300 transition-transform duration-300 z-40 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+					}`}
+			>
+
+				<ul className="menu w-full mt-[72px]">
+					{sidebarItems.map((item, index) => (
+						<SidebarItem key={index} item={item} />
+					))}
 				</ul>
-			</nav>
-		</aside>
-	);
+
+			</div>
+		</>
+	)
 };
 
 export default Sidebar;

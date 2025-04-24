@@ -192,7 +192,7 @@ function Index() {
       <div className='container flex flex-col px-4 py-4 md:px-12'>
         <TcBoxContainer
           contentContainerChildren={
-            <div className='flex max-h-[97dvh] min-h-[97dvh] flex-col justify-between space-y-4 p-4 md:p-10'>
+            <div className='flex max-h-[97dvh] min-h-[97dvh] flex-col justify-between space-y-4 p-4 md:p-10 bg-base-100'>
               <div className='min-h-[calc(100vh-100px)] flex-grow overflow-auto'>
                 <div className='flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0'>
                   <Stack spacing={1}>
@@ -240,7 +240,7 @@ function Index() {
                   <TcTimeZone handleZone={setSelectedZone} />
                 </div>
                 {fetchedAnnouncements &&
-                fetchedAnnouncements.results.length > 0 ? (
+                  fetchedAnnouncements.results.length > 0 ? (
                   <div className='overflow-x-scroll md:overflow-x-auto'>
                     <TcAnnouncementsTable
                       announcements={
@@ -276,7 +276,7 @@ function Index() {
                         totalItems={fetchedAnnouncements.totalResults}
                         itemsPerPage={Math.ceil(
                           fetchedAnnouncements.totalResults /
-                            fetchedAnnouncements.totalPages
+                          fetchedAnnouncements.totalPages
                         )}
                         currentPage={page}
                         onChangePage={handlePageChange}

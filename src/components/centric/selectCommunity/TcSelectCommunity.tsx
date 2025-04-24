@@ -7,9 +7,6 @@ import SearchWrapper from "@/components/search/SearchWrapper";
 
 import TcCommunityList from "./TcCommunityList";
 import Loading from "../../global/Loading";
-import SimpleBackdrop from "../../global/LoadingBackdrop";
-import TcButton from "../../shared/TcButton";
-import TcText from "../../shared/TcText";
 import { useToken } from "../../../context/TokenContext";
 import { debounce } from "../../../helpers/helper";
 import { StorageService } from "../../../services/StorageService";
@@ -25,7 +22,7 @@ export interface CommunityData {
 	includeAllCommunities: boolean;
 }
 
-function TcSelectCommunity() {
+function TcSelectCommunity({ handleCommunityLoading }: { handleCommunityLoading: (loading: boolean) => void }) {
 	const { retrieveCommunities } = useAppStore();
 	const { updateCommunity } = useToken();
 
@@ -41,6 +38,10 @@ function TcSelectCommunity() {
 		totalResults: 0,
 		includeAllCommunities: true,
 	});
+
+	useEffect(() => {
+		handleCommunityLoading(communityLoading);
+	}, [communityLoading]);
 
 	const fetchCommunities = async (params: any) => {
 		setLoading(true);
@@ -78,12 +79,12 @@ function TcSelectCommunity() {
 				community,
 			);
 
-			router.push("/centric/welcome");
+			router.push("/dashboard");
 		}
 	};
 
 	if (communityLoading) {
-		return <SimpleBackdrop />;
+		return null;
 	}
 
 	return (

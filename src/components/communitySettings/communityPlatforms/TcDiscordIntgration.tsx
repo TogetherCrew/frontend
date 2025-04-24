@@ -25,11 +25,8 @@ function TcDiscordIntgration({
 	connectedPlatforms,
 	handleUpdateCommunityPlatform,
 }: TcDiscordIntgrationProps) {
-	const router = useRouter();
 
 	const searchParams = useSearchParams();
-
-	const addPlatform = searchParams.get("addPlatform");
 
 	const { userProfile, connectNewPlatform } = useAppStore();
 
@@ -42,10 +39,11 @@ function TcDiscordIntgration({
 	};
 
 	useEffect(() => {
+		const addPlatform = searchParams?.get("addPlatform");
 		if (addPlatform === "discord") {
 			handleConnect();
 		}
-	}, [addPlatform]);
+	}, [searchParams]);
 
 	return (
 		<div className="flex items-center space-x-3 rounded-sm bg-secondary bg-opacity-5 p-5">

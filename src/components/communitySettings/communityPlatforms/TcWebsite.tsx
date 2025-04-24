@@ -34,7 +34,6 @@ function TcWebsite({
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
-	const addPlatform = searchParams.get("addPlatform");
 	const { createNewPlatform, deletePlatform, patchPlatformById } = useAppStore();
 	const [activePlatform, setActivePlatform] = useState<IPlatformProps | null>(
 		null,
@@ -47,10 +46,11 @@ function TcWebsite({
 	const [items, setItems] = useState<string[]>([]);
 
 	useEffect(() => {
+		const addPlatform = searchParams?.get("addPlatform");
 		if (addPlatform === "website") {
 			handleOpenDialog();
 		}
-	}, [addPlatform]);
+	}, [searchParams]);
 
 	useEffect(() => {
 		setItems(activePlatform?.metadata?.resources || []);

@@ -120,15 +120,15 @@ export function Chat() {
           </button>
         ))}
       </div>
-      <div className="flex flex-col bg-white h-[800px] rounded-lg shadow-lg">
-        <div className="flex-1 overflow-y-auto p-8 space-y-4 text-sm">
+      <div className="flex flex-col">
+        <div className="flex-1 overflow-y-hidden space-y-4 text-sm max-h-screen">
           {messages.map((message, index) => (
             <div
               key={index}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} leading-8`}
             >
               {message.role === 'user' ? (
-                <div className="max-w-[80%] rounded-lg px-4 py-2  bg-gray-100">
+                <div className="max-w-[80%] rounded-lg px-4 py-2  bg-gray-200">
                   <FadeIn text={message.text} duration={100} />
                 </div>
               ) : (

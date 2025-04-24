@@ -51,15 +51,15 @@ const Sidebar = () => {
 
   let menuItems: items[] = [
     {
-			name: "Home",
-			path: "/centric/welcome",
-			icon: (
-				<FontAwesomeIcon
-					icon={faHome}
-					style={{ fontSize: 30, color: "black" }}
-				/>
-			),
-		},
+      name: "Home",
+      path: "/dashboard",
+      icon: (
+        <FontAwesomeIcon
+          icon={faHome}
+          style={{ fontSize: 30, color: "black" }}
+        />
+      ),
+    },
     {
       name: 'Community Insights',
       path: '/',

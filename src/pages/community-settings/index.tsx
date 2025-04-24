@@ -65,6 +65,7 @@ function Index() {
 			<SEO titleTemplate="Community Settings" />
 			<div className="container flex flex-col px-4 py-4 md:px-12">
 				<TcBoxContainer
+					className="bg-base-100 rounded-lg"
 					contentContainerChildren={
 						<div className="space-y-4 px-4 pt-4 pb-[4rem] md:px-10">
 							<TcCommunitySettings />
