@@ -53,13 +53,13 @@ function TcDiscourse({
 		useState<boolean>(false);
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
-	const addPlatform = searchParams.get("addPlatform");
 
 	useEffect(() => {
+		const addPlatform = searchParams?.get("addPlatform");
 		if (addPlatform === "discourse") {
 			handleOpenDialog();
 		}
-	}, [addPlatform]);
+	}, [searchParams]);
 
 	const { showMessage } = useSnackbar();
 

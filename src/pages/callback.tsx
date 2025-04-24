@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import SimpleBackdrop from '../components/global/LoadingBackdrop';
+import LoadingScreen from '../components/LoadingScreen';
 import { useSnackbar } from '../context/SnackbarContext';
 import { extractUrlParams } from '../helpers/helper';
 import { StorageService } from '../services/StorageService';
@@ -160,6 +160,7 @@ function Callback() {
     switch (code) {
       case StatusCode.DISCORD_AUTHORIZATION_SUCCESSFUL_FIRST_TIME:
         setMessage('Welcome! Authorization for sign-in was successful.');
+        console.log('Settings user to local storage - 1');
         StorageService.writeLocalStorage('user', params);
         fetchCommunities();
 
@@ -169,6 +170,7 @@ function Callback() {
         setMessage(
           'You have authorized before and are trying to authorize again.'
         );
+        console.log('Settings user to local storage - 2');
         StorageService.writeLocalStorage('user', params);
         fetchCommunities();
 
@@ -270,7 +272,7 @@ function Callback() {
     }
   }, [router.isReady]);
 
-  return <SimpleBackdrop data-testid='loading-backdrop' />;
+  return <LoadingScreen />
 }
 
 export default Callback;

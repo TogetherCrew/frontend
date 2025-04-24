@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* global.css or input.css (wherever you import Tailwind) */
+.tooltip::before {
+  font-size: 0.75rem; /* equivalent to text-xs */
+}
+
 @font-face {
   font-family: Inter;
   font-weight: normal;

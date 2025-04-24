@@ -34,7 +34,6 @@ function TcMediaWiki({
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
-	const addPlatform = searchParams.get("addPlatform");
 	const { createNewPlatform, deletePlatform } = useAppStore();
 	const [activePlatform, setActivePlatform] = useState<IPlatformProps | null>(
 		null,
@@ -47,10 +46,11 @@ function TcMediaWiki({
 	const { showMessage } = useSnackbar();
 
 	useEffect(() => {
+		const addPlatform = searchParams?.get("addPlatform");
 		if (addPlatform === "mediawiki") {
 			handleOpenDialog();
 		}
-	}, [addPlatform]);
+	}, [searchParams]);
 
 	const communityId =
 		StorageService.readLocalStorage<IDiscordModifiedCommunity>("community")?.id;

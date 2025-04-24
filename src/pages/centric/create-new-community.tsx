@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { FormControlLabel } from '@mui/material';
+import Image from 'next/image';
 import router from 'next/router';
 
-import SimpleBackdrop from '../../components/global/LoadingBackdrop';
+import LoadingScreen from '@/components/LoadingScreen';
+
+import tcLogo from '../../assets/svg/tc-logo.svg';
 import TcBoxContainer from '../../components/shared/TcBox/TcBoxContainer';
 import TcButton from '../../components/shared/TcButton';
 import TcCheckbox from '../../components/shared/TcCheckbox';
@@ -31,83 +34,90 @@ function CreateNewCommunity() {
 
     updateCommunity(community);
 
-    router.push('/centric/welcome');
+    router.push('/dashboard');
   };
   if (loading) {
     return (
       <>
-        <SimpleBackdrop />
+        <LoadingScreen />
       </>
     );
   }
   return (
-    <TcBoxContainer
-      bgcolor='white'
-      className='min-h-[37.5rem] rounded p-4 md:p-16'
-      contentContainerChildren={
-        <div className='space-y-8 pt-10'>
-          <TcText text='Create a new community account' variant='h4' />
-          <div className='space-y-2'>
-            <TcText
-              className='text-left md:text-center'
-              text='What is the name of the community or organization?'
-              fontWeight='bold'
-              sx={{ typography: { xs: 'body2', md: 'body1' } }}
-            />
-            <TcInput
-              label='Community name'
-              variant='filled'
-              placeholder='Write community name Placeholder'
-              onChange={(e) => setCommunityName(e.target.value)}
-            />
-          </div>
-          <FormControlLabel
-            label={
+    <div className='flex flex-col gap-8 p-8'>
+      <Image src={tcLogo} alt='' className='mx-auto' />
+      <TcBoxContainer
+        bgcolor='white'
+        className='min-h-[37.5rem] rounded p-4 md:p-16'
+        contentContainerChildren={
+          <div className='space-y-8 pt-10'>
+            <TcText text='Create a new community account' variant='h4' />
+            <div className='space-y-2'>
               <TcText
                 className='text-left md:text-center'
-                text={
-                  <>
-                    {'I understand and agree to the '}
-                    <TcLink
-                      to='https://www.togethercrew.com/privacy-and-terms'
-                      color='primary'
-                      fontWeight='bold'
-                    >
-                      Privacy Policy
-                    </TcLink>
-                    {' and '}
-                    <TcLink
-                      to='https://www.togethercrew.com/privacy-and-terms'
-                      color='primary'
-                      fontWeight='bold'
-                    >
-                      Terms of Service.
-                    </TcLink>
-                  </>
-                }
-                variant='subtitle2'
+                text='What is the name of the community or organization?'
+                fontWeight='bold'
+                sx={{ typography: { xs: 'body2', md: 'body1' } }}
               />
-            }
-            control={
-              <TcCheckbox
-                color='secondary'
-                onChange={(e) => setReadTermsAndCondition(e.target.checked)}
+              <TcInput
+                label='Community name'
+                variant='filled'
+                placeholder='Write community name Placeholder'
+                onChange={(e) => setCommunityName(e.target.value)}
               />
-            }
-          />
-          <div>
-            <TcButton
-              text='Create community'
-              variant='contained'
-              sx={{ width: '15rem', padding: '0.5rem' }}
-              color='secondary'
-              disabled={!readTermsAndCondition}
-              onClick={() => handleCreateNewCommunitie()}
+            </div>
+
+            <FormControlLabel
+              label={
+                <TcText
+                  className='text-left md:text-center'
+                  text={
+                    <>
+                      {'I understand and agree to the '}
+                      <TcLink
+                        to='https://www.togethercrew.com/privacy-and-terms'
+                        color='primary'
+                        fontWeight='bold'
+                      >
+                        Privacy Policy
+                      </TcLink>
+                      {' and '}
+                      <TcLink
+                        to='https://www.togethercrew.com/privacy-and-terms'
+                        color='primary'
+                        fontWeight='bold'
+                      >
+                        Terms of Service.
+                      </TcLink>
+                    </>
+                  }
+                  variant='subtitle2'
+                />
+              }
+              control={
+                <TcCheckbox
+                  color='secondary'
+                  onChange={(e) => setReadTermsAndCondition(e.target.checked)}
+                />
+              }
             />
+            <div>
+              <TcButton
+                text='Create community'
+                variant='contained'
+                sx={{ width: '15rem', padding: '0.5rem' }}
+                color='secondary'
+                disabled={!readTermsAndCondition}
+                onClick={() => handleCreateNewCommunitie()}
+              />
+            </div>
           </div>
-        </div>
-      }
-    />
+        }
+      />
+      <div className='flex justify-start'>
+        <button className='btn btn-ghost' onClick={() => router.back()}>Back</button>
+      </div>
+    </div>
   );
 }
 

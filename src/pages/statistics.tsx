@@ -307,7 +307,7 @@ const Statistics = () => {
 
 	useEffect(() => {
 		const scrollToHash = () => {
-			const hash = window.location.hash.replace("#", ""); 
+			const hash = window.location.hash.replace("#", "");
 			if (!hash) return;
 
 			const interval = setInterval(() => {
@@ -380,7 +380,7 @@ const Statistics = () => {
 									typography: "body5",
 									borderRadius: "0px 14px 14px 14px;",
 								}}
-								className="rounded-md p-6 shadow-lg"
+								className="rounded-md p-6 shadow-lg bg-base-100"
 							>
 								<ActiveMembersComposition
 									platformType={activePlatform}
@@ -395,7 +395,7 @@ const Statistics = () => {
 									typography: "body5",
 									borderRadius: "0px 14px 14px 14px;",
 								}}
-								className="rounded-md p-6 shadow-lg"
+								className="rounded-md p-6 shadow-lg bg-base-100"
 							>
 								<Onboarding
 									platformType={activePlatform}
@@ -410,7 +410,7 @@ const Statistics = () => {
 									typography: "body5",
 									borderRadius: "0px 14px 14px 14px;",
 								}}
-								className="rounded-md p-6 shadow-lg"
+								className="rounded-md p-6 shadow-lg bg-base-100"
 							>
 								<InteractionsSection
 									activePeriod={activeInteractionDate}
@@ -426,7 +426,7 @@ const Statistics = () => {
 									typography: "body5",
 									borderRadius: "0px 14px 14px 14px;",
 								}}
-								className="rounded-md p-6 shadow-lg"
+								className="rounded-md p-6 shadow-lg bg-base-100"
 							>
 								<DisengagedMembersComposition
 									platformType={activePlatform}
@@ -441,7 +441,7 @@ const Statistics = () => {
 									typography: "body5",
 									borderRadius: "0px 14px 14px 14px;",
 								}}
-								className="mb-4 p-6 shadow-lg"
+								className="mb-4 p-6 shadow-lg bg-base-100"
 							>
 								<InactiveMembers
 									activePeriod={inactiveMembersDate}

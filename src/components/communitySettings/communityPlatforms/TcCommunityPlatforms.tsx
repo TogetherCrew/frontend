@@ -108,8 +108,9 @@ function TcCommunityPlatforms() {
 	const communityId = StorageService.readLocalStorage<IDiscordModifiedCommunity>("community")?.id;
 
 	useEffect(() => {
-		const platform = searchParams.get("managePlatform") || searchParams.get("addPlatform");
-		const config = PLATFORM_CONFIGS.find(p => p.name === platform);
+		const platform =
+			searchParams?.get("managePlatform") || searchParams?.get("addPlatform");
+		const config = PLATFORM_CONFIGS.find((p) => p.name === platform);
 		setActiveTab(config?.tabIndex ?? 0);
 	}, [searchParams]);
 
