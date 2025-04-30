@@ -4,10 +4,13 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AutoDetectPathInput } from "../inputs/AutoDetectPathInput";
 import { MultiCheckboxSelector } from "../inputs/MultiCheckboxSelector";
 import { WebsiteInput } from "../inputs/WebsiteInput";
+import { IPlatformProps } from "@/utils/interfaces";
+import { usePlatformActions } from "@/hooks/platforms/usePlatformActions";
+import { useToken } from "@/context/TokenContext";
 type FormValues = {
-  baseUrl: string;
+  baseURL: string;
   path: string;
-  namespaces: any[];
+  namespace: number[];
 };
 
 interface MediaWikiNamespace {
@@ -15,16 +18,22 @@ interface MediaWikiNamespace {
   canonical?: string;
 }
 
-export default function MediaWikiForm() {
+export default function MediaWikiForm({ edit }: { edit?: IPlatformProps }) {
+
+  console.log(edit)
+
+  const { community } = useToken();
+
   const methods = useForm<FormValues>({
     defaultValues: {
-      baseUrl: "",
-      path: "",
-      namespaces: [],
+      baseURL: edit?.metadata?.baseURL || "",
+      path: edit?.metadata?.path || "",
+      namespace: edit?.metadata?.namespace || [],
     },
   });
 
   const { handleSubmit, getValues, watch } = methods;
+  const { updatePlatform, createPlatform } = usePlatformActions();
 
   const path = watch("path")
 
@@ -32,8 +41,14 @@ export default function MediaWikiForm() {
 
   const guessPaths = ["/w/api.php", "/api.php"]
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log("Form Submitted:", data);
+    if (edit) {
+      await updatePlatform.mutateAsync({ platformId: edit.id, update: { metadata: data } })
+    } else {
+      const platform = { name: "mediaWiki", metadata: data, community: community?.id }
+      await createPlatform.mutateAsync({ platform })
+    }
   };
 
   const getNamespaces = useCallback(async (url: string) => {
@@ -69,7 +84,7 @@ export default function MediaWikiForm() {
 
   useEffect(() => {
     if (path) {
-      const url = new URL(path, getValues("baseUrl"))
+      const url = new URL(path, getValues("baseURL"))
       getNamespaces(url.toString())
     }
   }, [path])
@@ -78,7 +93,7 @@ export default function MediaWikiForm() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <WebsiteInput
-          name="baseUrl"
+          name="baseURL"
           label="MediaWiki Website"
           allowPath={false}
           placeholder="e.g., https://en.wikipedia.org"
@@ -87,13 +102,13 @@ export default function MediaWikiForm() {
         <AutoDetectPathInput
           name="path"
           label="API Path"
-          baseUrl={getValues("baseUrl")}
+          baseUrl={getValues("baseURL")}
           guessPaths={guessPaths}
           detectTest={detectTest}
           helperText="Please enter the path to the MediaWiki API."
         />
         <MultiCheckboxSelector
-          name="namespaces"
+          name="namespace"
           options={namespaces}
           label="Namespaces"
           helperText="Please select the namespaces you want to monitor. We suggest only selecting the Articles namespace."
