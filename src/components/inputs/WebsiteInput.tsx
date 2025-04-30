@@ -58,26 +58,30 @@ export function WebsiteInput({
     }
   }
   return (
-    <div className="form-control w-full">
-      <label className="label">
-        <span className="label-text">{label}</span>
-      </label>
+    <label className="form-control w-full">
+      <div className="label">
+        <span className="label-text font-semibold text-xs">{label}</span>
+      </div>
       <input
         type="text"
         placeholder={placeholder}
         className={`input input-bordered w-full ${errors[name] ? 'input-error' : ''}`}
         {...register(name, { required, validate })}
       />
-      {helperText && (
-        <label className="label">
-          <span className="label-text-alt">{helperText}</span>
-        </label>
-      )}
-      {errors[name] && (
-        <label className="label">
-          <span className="label-text-alt text-error">{errors[name]?.message as string}</span>
-        </label>
-      )}
-    </div>
+      {
+        helperText && (
+          <div className="label">
+            <span className="label-text-alt">{helperText}</span>
+          </div>
+        )
+      }
+      {
+        errors[name] && (
+          <div className="label">
+            <span className="label-text-alt text-error">{errors[name]?.message as string}</span>
+          </div>
+        )
+      }
+    </label >
   );
 }

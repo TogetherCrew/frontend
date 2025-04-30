@@ -20,14 +20,11 @@ export function AutoDetectPathInput({
 }: AutoDetectPathInputProps) {
   const { register, setValue, watch } = useFormContext();
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "fail">("idle");
-  const [attempted, setAttempted] = useState(false);
-
   const currentValue = watch(name);
 
   useEffect(() => {
     if (!baseUrl) return;
 
-    let found = false;
     const tryDetect = async () => {
       setStatus("loading");
       for (const path of guessPaths) {
@@ -37,24 +34,20 @@ export function AutoDetectPathInput({
         console.log("isValid", isValid);
         if (isValid) {
           setValue(name, path, { shouldValidate: true });
-          found = true;
           setStatus("success");
-          break;
+          return;
         }
       }
-      if (!found) {
-        setStatus("fail");
-      }
-      setAttempted(true);
+      setStatus("fail");
     };
 
     tryDetect();
-  }, [baseUrl, guessPaths.join(","), detectTest, setValue, name]);
+  }, [baseUrl]);
 
   return (
     <div className="form-control w-full">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text font-semibold text-xs">{label}</span>
         {status === "loading" && <span className="loading loading-spinner loading-xs ml-2" />}
         {status === "success" && <span className="text-success text-xs ml-2">Detected</span>}
         {status === "fail" && <span className="text-error text-xs ml-2">Failed</span>}
@@ -65,13 +58,14 @@ export function AutoDetectPathInput({
         className="input input-bordered w-full"
         {...register(name, { required: true })}
         defaultValue={currentValue}
+        disabled={status === "success" || status === "loading"}
       />
       {helperText && (
         <label className="label">
           <span className="label-text-alt">{helperText}</span>
         </label>
       )}
-      {status === "fail" && attempted && (
+      {status === "fail" && (
         <label className="label">
           <span className="label-text-alt text-warning">Couldn't auto-detect. Please enter manually.</span>
         </label>
