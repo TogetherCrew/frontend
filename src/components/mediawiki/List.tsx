@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaChevronLeft, FaExternalLinkAlt, FaRegEdit } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa6";
 import { IoMdMore } from "react-icons/io";
 
 import { useNamespaces } from "@/hooks/mediawiki/useNamespaces";
@@ -10,7 +11,6 @@ import { usePlatforms } from "@/hooks/platforms/usePlatforms";
 
 import { useToken } from "@/context/TokenContext";
 import { IPlatformProps } from "@/utils/interfaces";
-import { FaChevronRight } from "react-icons/fa6";
 
 interface TableItem {
   value: any;

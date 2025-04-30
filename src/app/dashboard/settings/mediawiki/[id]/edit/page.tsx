@@ -1,9 +1,11 @@
 'use client'
 
-import MediaWikiForm from "@/components/mediawiki/Form";
-import Breadcrumbs from "@/components/layouts/Breadcrumbs";
-import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+
+import Breadcrumbs from "@/components/layouts/Breadcrumbs";
+import MediaWikiForm from "@/components/mediawiki/Form";
+
 import { axiosInstance } from "@/axiosInstance";
 import { IPlatformProps } from "@/utils/interfaces";
 export default function MediaWikiEditPage() {

@@ -1,10 +1,12 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+
+import Breadcrumbs from "@/components/layouts/Breadcrumbs";
+
 import { axiosInstance } from "@/axiosInstance";
 import { IPlatformProps } from "@/utils/interfaces";
-import { useParams } from "next/navigation";
-import Breadcrumbs from "@/components/layouts/Breadcrumbs";
 
 export default function MediaWikiPage() {
   const { id } = useParams();

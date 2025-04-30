@@ -1,7 +1,7 @@
 'use client'
 
-import MediaWikiForm from "@/components/mediawiki/Form";
 import Breadcrumbs from "@/components/layouts/Breadcrumbs";
+import MediaWikiForm from "@/components/mediawiki/Form";
 
 export default function MediaWikiNewPage() {
   return (

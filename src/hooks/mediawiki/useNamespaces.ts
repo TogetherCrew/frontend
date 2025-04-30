@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export const useNamespaces = (url: string | undefined) => {
   return useQuery({

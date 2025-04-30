@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { usePlatformActions } from "@/hooks/platforms/usePlatformActions";
+
+import { useToken } from "@/context/TokenContext";
+import { IPlatformProps } from "@/utils/interfaces";
+
 import { AutoDetectPathInput } from "../inputs/AutoDetectPathInput";
 import { MultiCheckboxSelector } from "../inputs/MultiCheckboxSelector";
 import { WebsiteInput } from "../inputs/WebsiteInput";
-import { IPlatformProps } from "@/utils/interfaces";
-import { usePlatformActions } from "@/hooks/platforms/usePlatformActions";
-import { useToken } from "@/context/TokenContext";
 type FormValues = {
   baseURL: string;
   path: string;
