@@ -26,7 +26,7 @@ export const PLATFORM_CONTEXT: IPlatformContext[] = [
     configPath: "/community-settings?managePlatform=notion"
   },
   {
-    name: "mediawiki", title: "Mediawiki", available: true,
+    name: "mediaWiki", title: "Mediawiki", available: true,
     configPath: "/dashboard/settings/mediawiki/"
   },
   {

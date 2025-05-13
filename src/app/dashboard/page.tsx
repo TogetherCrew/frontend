@@ -14,7 +14,7 @@ export default function Page() {
       <div className="flex flex-col gap-6 sm:gap-8">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
           <FaHome className="text-secondary" />
-          <span>Home</span>
+          <span>Dashboard</span>
         </h1>
         {/* <OnlyAdminWarning /> */}
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">

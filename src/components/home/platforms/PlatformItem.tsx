@@ -9,23 +9,6 @@ import { IPlatformContext } from "@/utils/interfaces";
 
 import { UpvoteButton } from "./UpvoteButton";
 
-// function ConnectButton({ context }: { context: IPlatformContext }) {
-//   return (
-//     <a href={`/community-settings?addPlatform=${context.title.toLocaleLowerCase()}`} className="btn btn-sm btn-square">
-//       <FaCog />
-//     </a>
-//   )
-// }
-
-// function ManageButton({ context }: { context: IPlatformContext }) {
-//   return (
-//     <a href={`/community-settings?managePlatform=${context.title.toLocaleLowerCase()}`} className="btn btn-sm btn-square">
-//       <FaCog />
-//     </a>
-//   )
-// }
-
-
 export default function PlatformItem({ context, exists }: { context: IPlatformContext, exists: boolean }) {
 
   const { community } = useToken();
