@@ -31,7 +31,6 @@ function SidebarItem({ item }: { item: ISidebarItem }) {
 			</li>
 		)
 	}
-	console.log(item.href, window.location.pathname)
 	return (
 		<li>
 			<Link href={item.href || ''} className={`py-3 lg:hidden ${item.href === window.location.pathname ? 'text-secondary' : ''}`}><SidebarLabel item={item} /></Link>

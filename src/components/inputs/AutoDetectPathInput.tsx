@@ -29,9 +29,7 @@ export function AutoDetectPathInput({
       setStatus("loading");
       for (const path of guessPaths) {
         const fullUrl = new URL(path, baseUrl).toString();
-        console.log("Trying", fullUrl);
         const isValid = await detectTest(fullUrl);
-        console.log("isValid", isValid);
         if (isValid) {
           setValue(name, path, { shouldValidate: true });
           setStatus("success");

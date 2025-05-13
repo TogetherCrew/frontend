@@ -27,7 +27,7 @@ export const PLATFORM_CONTEXT: IPlatformContext[] = [
   },
   {
     name: "mediawiki", title: "Mediawiki", available: true,
-    configPath: "/community-settings?managePlatform=mediawiki"
+    configPath: "/dashboard/settings/mediawiki/"
   },
   {
     name: "x", title: "X (Twitter)", available: false,

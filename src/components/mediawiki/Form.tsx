@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { BsPlusLg } from "react-icons/bs";
+import { IoSaveOutline } from "react-icons/io5";
 
 import { usePlatformActions } from "@/hooks/platforms/usePlatformActions";
 
@@ -21,8 +23,7 @@ interface MediaWikiNamespace {
 }
 
 export default function MediaWikiForm({ edit }: { edit?: IPlatformProps }) {
-
-  console.log(edit)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { community } = useToken();
 
@@ -44,17 +45,20 @@ export default function MediaWikiForm({ edit }: { edit?: IPlatformProps }) {
   const guessPaths = ["/w/api.php", "/api.php"]
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Form Submitted:", data);
-    if (edit) {
-      await updatePlatform.mutateAsync({ platformId: edit.id, update: { metadata: data } })
-    } else {
-      const platform = { name: "mediaWiki", metadata: data, community: community?.id }
-      await createPlatform.mutateAsync({ platform })
+    setIsSubmitting(true);
+    try {
+      if (edit) {
+        await updatePlatform.mutateAsync({ platformId: edit.id, update: { metadata: data } })
+      } else {
+        const platform = { name: "mediaWiki", metadata: data, community: community?.id }
+        await createPlatform.mutateAsync({ platform })
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const getNamespaces = useCallback(async (url: string) => {
-    setNamespaces([])
     const params = new URLSearchParams({
       action: "query",
       meta: "siteinfo",
@@ -64,14 +68,14 @@ export default function MediaWikiForm({ edit }: { edit?: IPlatformProps }) {
     })
     const res = await fetch(url.concat("?", params.toString()))
     const data = await res.json()
-    console.log(data)
+    setNamespaces([])
     Object.values(data?.query?.namespaces || {}).forEach((value: unknown) => {
       const namespace = value as MediaWikiNamespace;
-      if (namespace.id !== 0) {
-        setNamespaces((prev) => [...prev, { label: namespace.canonical, value: namespace.id }]);
-      } else {
-        setNamespaces((prev) => [...prev, { label: "Articles", value: namespace.id }]);
+      let obj = { label: namespace.canonical, value: namespace.id }
+      if (namespace.id === 0) {
+        obj = { label: "Articles", value: namespace.id };
       }
+      setNamespaces((prev) => [...prev, obj]);
     });
   }, [])
 
@@ -116,8 +120,15 @@ export default function MediaWikiForm({ edit }: { edit?: IPlatformProps }) {
           helperText="Please select the namespaces you want to monitor. We suggest only selecting the Articles namespace."
         />
 
-        <button className="btn btn-primary" type="submit">
-          Submit
+        <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <span className="loading loading-spinner loading-sm mr-2"></span>
+          ) : edit ? (
+            <IoSaveOutline className="mr-2" size={18} />
+          ) : (
+            <BsPlusLg className="mr-2" size={18} />
+          )}
+          {edit ? "Update" : "Create"}
         </button>
       </form>
     </FormProvider>
