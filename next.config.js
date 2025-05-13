@@ -1,14 +1,17 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // output: 'export',
+  output: 'standalone',
   reactStrictMode: false,
   swcMinify: true,
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
-  distDir: 'out',
+  experimental: {
+    runtime: 'edge',
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
