@@ -3,13 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
-import Breadcrumbs from "@/components/layouts/Breadcrumbs";
-
 import { axiosInstance } from "@/axiosInstance";
-import { IPlatformProps } from "@/utils/interfaces";
 
 export default function MediaWikiPage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string;
 
   const { data } = useQuery({
     queryKey: ["platform", id],
@@ -18,7 +16,6 @@ export default function MediaWikiPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Breadcrumbs />
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">MediaWiki</h1>
       </div>

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 
-import MediaWikiForm from "@/components/mediawiki/Form";
 import MediaWikiList from "@/components/mediawiki/List";
 
 export default function MediaWikiSettingsPage() {

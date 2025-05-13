@@ -3,7 +3,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
-import Breadcrumbs from "@/components/layouts/Breadcrumbs";
 import MediaWikiForm from "@/components/mediawiki/Form";
 
 import { axiosInstance } from "@/axiosInstance";
@@ -20,7 +19,6 @@ export default function MediaWikiEditPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Breadcrumbs />
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">Edit MediaWiki</h1>
       </div>
