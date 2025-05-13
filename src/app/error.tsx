@@ -1,11 +1,24 @@
-'use client'
+'use client';
 
 export const runtime = 'edge';
 
-export default function ErrorPage() {
+import { useEffect } from 'react';
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
   return (
     <div>
-      <h1>500 - Internal Server Error</h1>
+      <h2>Something went wrong!</h2>
+      <button onClick={() => reset()}>Try again</button>
     </div>
-  )
+  );
 }
