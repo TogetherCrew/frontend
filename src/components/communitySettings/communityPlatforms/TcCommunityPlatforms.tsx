@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import TcCommunityPlatformIcon from "./TcCommunityPlatformIcon";
 import TcDiscordIntgration from "./TcDiscordIntgration";
 import TcDiscourse from "./TcDiscourse";
-import TcGdriveIntegration from "./TcGdriveIntegration";
 import TcGithubIntegration from "./TcGithubIntegration";
 import TcMediaWiki from "./TcMediaWiki";
 import TcNotionIntegration from "./TcNotionIntegration";
