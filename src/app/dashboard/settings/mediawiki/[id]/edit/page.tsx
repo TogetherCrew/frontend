@@ -1,7 +1,5 @@
 'use client'
 
-export const runtime = 'edge'
-
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
@@ -9,8 +7,8 @@ import MediaWikiForm from "@/components/mediawiki/Form";
 
 import { axiosInstance } from "@/axiosInstance";
 import { IPlatformProps } from "@/utils/interfaces";
-export default function MediaWikiEditPage() {
 
+export default function MediaWikiEditPage() {
   const params = useParams();
   const id = params?.id as string;
 
