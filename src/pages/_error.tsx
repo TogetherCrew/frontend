@@ -6,6 +6,8 @@ import notFounded from '../assets/svg/404.svg';
 import tcLogo from '../assets/svg/tc-logo.svg';
 import TcButton from '../components/shared/TcButton';
 
+export const runtime = 'edge';
+
 interface ErrorPageProps {
   statusCode?: number;
 }
