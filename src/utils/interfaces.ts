@@ -271,3 +271,7 @@ export interface IMediaWikiNamepace {
   name: string
   count: number
 }
+
+export interface IMediaWikiModuleFormPayload {
+  activated: boolean;
+}

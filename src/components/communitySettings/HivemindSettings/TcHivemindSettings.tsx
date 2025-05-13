@@ -4,11 +4,12 @@ import { Box, CircularProgress, Paper, Tab, Tabs } from '@mui/material';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 
+import { MediaWikiModuleForm } from '@/components/settings/modules/mediawiki/Form';
+
 import TcHivemindDiscordAnswering from './TcHivemindDiscordAnswering';
 import TcHivemindDiscordLearnings from './TcHivemindDiscordLearnings';
 import TcHivemindGithub from './TcHivemindGithub';
 import TcHivemindGoogle from './TcHivemindGoogle';
-import TcHivemindMediaWiki from './TcHivemindMediaWiki';
 import TcHivemindNotion from './TcHivemindNotion';
 import TcHivemindWebsite from './TcHivemindWebsite';
 import TcCommunityPlatformIcon from '../communityPlatforms/TcCommunityPlatformIcon';
@@ -23,6 +24,7 @@ import useAppStore from '../../../store/useStore';
 import { IntegrationPlatform } from '../../../utils/enums';
 import {
   IDiscordModifiedCommunity,
+  IMediaWikiModuleFormPayload,
   IModuleProps,
   IPlatformProps,
 } from '../../../utils/interfaces';
@@ -540,16 +542,12 @@ function HivemindSettings() {
         {activePlatform === 3 && (
           <TabPanel value={activePlatform} index={3}>
             {platforms && platforms.length > 0 && (
-              <TcHivemindMediaWiki
+              <MediaWikiModuleForm
                 isLoading={loading}
-                defaultMediaWikiHivemindConfig={
-                  hivemindModule?.options?.platforms.find(
-                    (platform) => platform.name === 'mediaWiki'
-                  )?.metadata || { pageIds: [] }
-                }
-                handlePatchHivemindMediaWiki={(payload) =>
-                  handlePatchModule('mediaWiki', payload)
-                }
+                payload={hivemindModule?.options?.platforms.find(
+                  (platform) => platform.name === 'mediaWiki'
+                )?.metadata as IMediaWikiModuleFormPayload || { activated: false }}
+                patch={(payload) => handlePatchModule('mediaWiki', payload)}
               />
             )}
           </TabPanel>
