@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import { config } from '@fortawesome/fontawesome-svg-core';
 import type { AppProps } from 'next/app';
 import { hotjar } from 'react-hotjar';
 
 import '../styles/globals.css';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-config.autoAddCss = false;
 
 type ComponentWithPageLayout = AppProps & {
   Component: AppProps['Component'] & {
