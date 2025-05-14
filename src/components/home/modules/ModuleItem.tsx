@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Link from "next/link";
 import { FaCog } from "react-icons/fa";
 import { toast } from 'react-toastify';
 
@@ -70,9 +71,9 @@ export default function ModuleItem({ context, module }: { context: IModuleContex
                   className="toggle toggle-success toggle-sm"
                 />
 
-                <a href={context.configPath} className="btn btn-square btn-sm">
+                <Link href={context.configPath} className="btn btn-square btn-sm">
                   <FaCog />
-                </a>
+                </Link>
               </>
             ) : (<>
               {module?.activated ? (

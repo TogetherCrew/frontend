@@ -46,7 +46,7 @@ const UrlCell = ({ url, path = '' }: { url: string, path?: string }) => {
   return (
     <TableCell>
       <div className="flex flex-wrap gap-1 text-sm text-gray-900">
-        <a href={`${url}${path}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center gap-2"><span>{url}{path}</span><FaExternalLinkAlt size={10} /></a>
+        <Link href={`${url}${path}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center gap-2"><span>{url}{path}</span><FaExternalLinkAlt size={10} /></Link>
       </div>
     </TableCell>
   )

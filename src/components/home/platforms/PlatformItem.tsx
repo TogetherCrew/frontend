@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaCog } from "react-icons/fa";
 
 import { useAdmin } from "@/hooks/useAdmin";
@@ -33,9 +34,9 @@ export default function PlatformItem({ context, exists }: { context: IPlatformCo
                 <div className="w-2 h-2 bg-base-300 rounded-full"></div>
               )}
               {isAdmin && (
-                <a href={context.configPath} className="btn btn-sm btn-square">
+                <Link href={context.configPath} className="btn btn-sm btn-square">
                   <FaCog />
-                </a>
+                </Link>
               )}
 
             </div>
