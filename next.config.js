@@ -13,7 +13,7 @@ const nextConfig = {
 //   setupDevPlatform(nextConfig);
 // }
 
-export default nextConfig;
+// export default nextConfig;
 
 // module.exports = nextConfig;
 
@@ -32,4 +32,4 @@ export default nextConfig;
 //   },
 // })
 
-// module.exports = nextConfig;
+module.exports = nextConfig;
