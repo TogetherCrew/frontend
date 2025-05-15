@@ -1,5 +1,7 @@
 'use client'
 
+export const runtime = "edge";
+
 import { Inter, Roboto_Mono } from 'next/font/google'
 
 import "@/styles/globals.css";
