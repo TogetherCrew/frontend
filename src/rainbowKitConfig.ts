@@ -4,6 +4,8 @@ import { http } from 'wagmi';
 
 import { conf } from './configs';
 
+console.log(`PROJECT_ID: ${conf.PROJECT_ID}`);
+
 export const isProduction = conf.IS_MAINNET === 'true';
 
 export const SUPPORTED_CHAINS: Chain[] = isProduction
