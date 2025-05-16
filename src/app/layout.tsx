@@ -1,6 +1,6 @@
 'use client'
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 import { Inter, Roboto_Mono } from 'next/font/google'
 
