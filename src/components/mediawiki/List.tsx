@@ -96,11 +96,11 @@ const MediaWikiRow = ({ platform }: { platform: IPlatformProps }) => {
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
-    const tags = platform.metadata.namespace.map((key: number) => {
+    const tags = platform.metadata.namespace?.map((key: number) => {
       if (key === 0) return "Articles"
       const namespace = data?.query?.namespaces[key]
       return namespace ? namespace.canonical : "Unknown"
-    })
+    }) || [];
     setTags(tags);
   }, [data]);
 
