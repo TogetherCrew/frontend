@@ -6,12 +6,11 @@ type items = {
   icon: any;
 };
 
-import { faHeartPulse, faHome, faUserGroup } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Drawer } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaHome } from 'react-icons/fa';
+import { FaHeartPulse, FaUserGroup } from 'react-icons/fa6';
 import { FiSettings } from 'react-icons/fi';
 import { MdKeyboardBackspace, MdOutlineAnnouncement } from 'react-icons/md';
 import { RiNftFill } from 'react-icons/ri';
@@ -51,34 +50,19 @@ const Sidebar = () => {
 
   let menuItems: items[] = [
     {
-			name: "Home",
-			path: "/centric/welcome",
-			icon: (
-				<FontAwesomeIcon
-					icon={faHome}
-					style={{ fontSize: 30, color: "black" }}
-				/>
-			),
-		},
+      name: "Home",
+      path: "/dashboard",
+      icon: <FaHome />,
+    },
     {
       name: 'Community Insights',
       path: '/',
-      icon: (
-        <FontAwesomeIcon
-          icon={faUserGroup}
-          style={{ fontSize: 30, color: 'black' }}
-        />
-      ),
+      icon: <FaUserGroup />
     },
     {
       name: 'Community Health',
       path: '/community-health',
-      icon: (
-        <FontAwesomeIcon
-          icon={faHeartPulse}
-          style={{ fontSize: 30, color: 'black' }}
-        />
-      ),
+      icon: <FaHeartPulse />,
     },
     {
       name: 'Smart Announcements',

@@ -1,8 +1,10 @@
 import React from "react";
 import { LoginButton } from "@telegram-auth/react";
+import Image from 'next/image';
 
 import { conf } from "@/configs";
 
+import tcLogo from '../../assets/svg/tc-logo.svg';
 import TcBoxContainer from "../../components/shared/TcBox/TcBoxContainer";
 import TcButton from "../../components/shared/TcButton";
 import TcText from "../../components/shared/TcText";
@@ -11,14 +13,15 @@ import useAppStore from "../../store/useStore";
 
 function Index() {
 	const { discordAuthorization } = useAppStore();
-	
+
 	return (
-		<div>
+		<div className='flex flex-col gap-8 p-8'>
+			<Image src={tcLogo} alt='' className='mx-auto' />
 			<TcBoxContainer
 				bgcolor="white"
 				className="rounded py-12 px-4 md:min-h-[37.5rem] md:p-12"
 				contentContainerChildren={
-					<div className="space-y-8 py-12">
+					<div className="flex flex-col items-center space-y-8 py-12">
 						<TcText
 							sx={{ typography: { xs: "h5", md: "h4" } }}
 							color="initial"

@@ -28,6 +28,7 @@ function Index() {
           ]}
         />
         <TcBoxContainer
+          className='bg-base-100 rounded-lg'
           contentContainerChildren={
             <div className='space-y-4'>
               <div className='space-y-4 px-4 pt-4 pb-[1rem] md:px-10'>

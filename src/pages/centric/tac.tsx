@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { FormControlLabel } from '@mui/material';
+import Image from 'next/image';
 import router from 'next/router';
 
-import SimpleBackdrop from '../../components/global/LoadingBackdrop';
+import LoadingScreen from '@/components/LoadingScreen';
+
+import tcLogo from '../../assets/svg/tc-logo.svg';
 import TcBoxContainer from '../../components/shared/TcBox/TcBoxContainer';
 import TcButton from '../../components/shared/TcButton';
 import TcCheckbox from '../../components/shared/TcCheckbox';
@@ -41,11 +44,12 @@ function Tac() {
   };
 
   if (loading) {
-    return <SimpleBackdrop />;
+    return <LoadingScreen />;
   }
 
   return (
-    <div>
+    <div className='flex flex-col gap-8 p-8'>
+      <Image src={tcLogo} alt='' className='mx-auto' />
       <TcBoxContainer
         bgcolor='white'
         className='rounded py-12 px-4 md:min-h-[37.5rem] md:p-12'

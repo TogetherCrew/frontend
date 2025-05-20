@@ -13,7 +13,7 @@ export default function ChatForm({ onSubmit, isLoading }: { onSubmit: (input: st
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border-t">
+    <form onSubmit={handleSubmit} className="p-4 rounded-lg mb-4 bg-base-100 w-full max-w-3xl">
       <div className="flex flex-col gap-2">
         <ChatTextArea input={input} setInput={setInput} onSubmit={onSubmit} isLoading={isLoading} />
         <div className="flex justify-between items-center">

@@ -33,13 +33,13 @@ function TcGithubIntegration({
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
-	const addPlatform = searchParams.get("addPlatform");
 
 	useEffect(() => {
+		const addPlatform = searchParams?.get("addPlatform");
 		if (addPlatform === "github") {
 			connectNewPlatform("github");
 		}
-	}, [addPlatform]);
+	}, [searchParams]);
 
 	const { showMessage } = useSnackbar();
 

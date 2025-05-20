@@ -1,15 +1,15 @@
-import { FaRobot } from "react-icons/fa";
+'use client';
+
+import { FaRobot } from "react-icons/fa6";
 
 import { Chat } from "@/components/chat/Chat";
 import SEO from "@/components/global/SEO";
 
-import { defaultLayout } from "@/layouts/defaultLayout";
-
-function Index() {
+export default function AgentPage() {
   return (
     <>
       <SEO titleTemplate="Agent" />
-      <div className="flex flex-col gap-4 bg-gray-100 w-full h-screen p-8">
+      <div className="flex flex-col gap-4 bg-gray-100 w-full p-8 overflow-y-auto">
         <div className="flex flex-col gap-4">
           <h1 className="text-3xl font-bold text-center flex items-center justify-center gap-2">
             <FaRobot className="inline-block mr-2" />
@@ -22,7 +22,3 @@ function Index() {
     </>
   );
 }
-
-Index.pageLayout = defaultLayout;
-
-export default Index;

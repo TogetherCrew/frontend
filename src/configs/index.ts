@@ -16,6 +16,8 @@ export const conf = {
 	TELEGRAM_BOT_USERNAME: process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME,
 };
 
+console.log(`conf: ${JSON.stringify(conf)}`);
+
 export const PREMIUM_GUILDS = [
 	"732892373507375164", // fuel
 	"915914985140531240", // rndao
